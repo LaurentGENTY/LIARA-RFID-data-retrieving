@@ -18,8 +18,8 @@ namespace WebSocketClient
             this.list.Add("Chaudron1", "00000000001B2A4601001987");
             this.list.Add("Chaudron2", "000000000000000000002740");
             this.list.Add("Chaudron3", "000000000000000000002741");
-            this.list.Add("BocalPates_1", "000000000000000000002748");
-            this.list.Add("BocalPates_2", "000000000000000000002765");
+            this.list.Add("BocalPates1", "000000000000000000002748");
+            this.list.Add("BocalPates2", "000000000000000000002765");
 
         }
 

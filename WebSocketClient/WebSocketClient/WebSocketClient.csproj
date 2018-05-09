@@ -51,7 +51,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Angles.cs" />
     <Compile Include="Antennas.cs" />
+    <Compile Include="Distances.cs" />
     <Compile Include="Tags.cs" />
     <Compile Include="WebSocketClient.cs">
       <SubType>Form</SubType>

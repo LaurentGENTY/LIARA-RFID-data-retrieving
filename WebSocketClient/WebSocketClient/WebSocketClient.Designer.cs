@@ -54,21 +54,37 @@
             this.labelIDAntenna = new System.Windows.Forms.Label();
             this.labelIDObject = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.listAngles = new System.Windows.Forms.ListBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.listDistances = new System.Windows.Forms.ListBox();
+            this.fileName = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.currentAngle = new System.Windows.Forms.Label();
+            this.currentDistance = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.filters = new System.Windows.Forms.Label();
+            this.cleanButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // messages
             // 
             this.messages.FormattingEnabled = true;
             this.messages.ItemHeight = 16;
-            this.messages.Location = new System.Drawing.Point(12, 335);
+            this.messages.Location = new System.Drawing.Point(16, 326);
             this.messages.Name = "messages";
-            this.messages.Size = new System.Drawing.Size(776, 276);
+            this.messages.Size = new System.Drawing.Size(1105, 276);
             this.messages.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(9, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 17);
             this.label1.TabIndex = 2;
@@ -167,7 +183,7 @@
             // 
             this.listAntennas.FormattingEnabled = true;
             this.listAntennas.ItemHeight = 16;
-            this.listAntennas.Location = new System.Drawing.Point(448, 32);
+            this.listAntennas.Location = new System.Drawing.Point(798, 28);
             this.listAntennas.Name = "listAntennas";
             this.listAntennas.Size = new System.Drawing.Size(115, 292);
             this.listAntennas.TabIndex = 13;
@@ -177,7 +193,7 @@
             // 
             this.listTags.FormattingEnabled = true;
             this.listTags.ItemHeight = 16;
-            this.listTags.Location = new System.Drawing.Point(586, 32);
+            this.listTags.Location = new System.Drawing.Point(919, 28);
             this.listTags.Name = "listTags";
             this.listTags.Size = new System.Drawing.Size(202, 292);
             this.listTags.TabIndex = 14;
@@ -186,7 +202,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(445, 9);
+            this.label9.Location = new System.Drawing.Point(795, 8);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(118, 17);
             this.label9.TabIndex = 15;
@@ -195,7 +211,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(583, 9);
+            this.label10.Location = new System.Drawing.Point(916, 8);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(94, 17);
             this.label10.TabIndex = 16;
@@ -295,11 +311,175 @@
             this.label11.TabIndex = 27;
             this.label11.Text = "Messages Log :";
             // 
+            // textBox1
+            // 
+            this.textBox1.Enabled = false;
+            this.textBox1.Location = new System.Drawing.Point(653, 31);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(37, 22);
+            this.textBox1.TabIndex = 30;
+            this.textBox1.Text = ".csv";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(445, 36);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(53, 17);
+            this.label15.TabIndex = 29;
+            this.label15.Text = "Name :";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(445, 16);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(73, 17);
+            this.label16.TabIndex = 28;
+            this.label16.Text = "Output file";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(445, 92);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(75, 17);
+            this.label17.TabIndex = 33;
+            this.label17.Text = "Distance : ";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(445, 67);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(136, 17);
+            this.label18.TabIndex = 32;
+            this.label18.Text = "Controls parameters";
+            // 
+            // listAngles
+            // 
+            this.listAngles.FormattingEnabled = true;
+            this.listAngles.ItemHeight = 16;
+            this.listAngles.Location = new System.Drawing.Point(621, 112);
+            this.listAngles.Name = "listAngles";
+            this.listAngles.Size = new System.Drawing.Size(155, 164);
+            this.listAngles.TabIndex = 35;
+            this.listAngles.SelectedIndexChanged += new System.EventHandler(this.listAngles_SelectedIndexChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(618, 92);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(52, 17);
+            this.label19.TabIndex = 36;
+            this.label19.Text = "Angle :";
+            // 
+            // listDistances
+            // 
+            this.listDistances.FormattingEnabled = true;
+            this.listDistances.ItemHeight = 16;
+            this.listDistances.Location = new System.Drawing.Point(448, 112);
+            this.listDistances.Name = "listDistances";
+            this.listDistances.Size = new System.Drawing.Size(155, 164);
+            this.listDistances.TabIndex = 37;
+            this.listDistances.SelectedIndexChanged += new System.EventHandler(this.listDistances_SelectedIndexChanged);
+            // 
+            // fileName
+            // 
+            this.fileName.AutoSize = true;
+            this.fileName.Location = new System.Drawing.Point(504, 35);
+            this.fileName.Name = "fileName";
+            this.fileName.Size = new System.Drawing.Size(138, 17);
+            this.fileName.TabIndex = 38;
+            this.fileName.Text = "**************************";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(445, 292);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(120, 17);
+            this.label20.TabIndex = 39;
+            this.label20.Text = "Current distance :";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(628, 292);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(102, 17);
+            this.label21.TabIndex = 40;
+            this.label21.Text = "Current angle :";
+            // 
+            // currentAngle
+            // 
+            this.currentAngle.AutoSize = true;
+            this.currentAngle.Location = new System.Drawing.Point(736, 292);
+            this.currentAngle.Name = "currentAngle";
+            this.currentAngle.Size = new System.Drawing.Size(23, 17);
+            this.currentAngle.TabIndex = 41;
+            this.currentAngle.Text = "***";
+            // 
+            // currentDistance
+            // 
+            this.currentDistance.AutoSize = true;
+            this.currentDistance.Location = new System.Drawing.Point(571, 292);
+            this.currentDistance.Name = "currentDistance";
+            this.currentDistance.Size = new System.Drawing.Size(33, 17);
+            this.currentDistance.TabIndex = 42;
+            this.currentDistance.Text = "*****";
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(342, 83);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 31);
+            this.button1.TabIndex = 43;
+            this.button1.Text = "Filters";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.testButton);
+            // 
+            // filters
+            // 
+            this.filters.AutoSize = true;
+            this.filters.Location = new System.Drawing.Point(365, 122);
+            this.filters.Name = "filters";
+            this.filters.Size = new System.Drawing.Size(29, 17);
+            this.filters.TabIndex = 44;
+            this.filters.Text = "ON";
+            // 
+            // cleanButton
+            // 
+            this.cleanButton.Location = new System.Drawing.Point(342, 142);
+            this.cleanButton.Name = "cleanButton";
+            this.cleanButton.Size = new System.Drawing.Size(75, 31);
+            this.cleanButton.TabIndex = 45;
+            this.cleanButton.Text = "Clean";
+            this.cleanButton.UseVisualStyleBackColor = true;
+            this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
+            // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 623);
+            this.ClientSize = new System.Drawing.Size(1133, 621);
+            this.Controls.Add(this.cleanButton);
+            this.Controls.Add(this.filters);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.currentDistance);
+            this.Controls.Add(this.currentAngle);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.fileName);
+            this.Controls.Add(this.listDistances);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.listAngles);
+            this.Controls.Add(this.label17);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.label16);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.labelIDObject);
             this.Controls.Add(this.labelIDAntenna);
@@ -362,6 +542,22 @@
         private System.Windows.Forms.Label labelIDAntenna;
         private System.Windows.Forms.Label labelIDObject;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.ListBox listAngles;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ListBox listDistances;
+        private System.Windows.Forms.Label fileName;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label currentAngle;
+        private System.Windows.Forms.Label currentDistance;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Label filters;
+        private System.Windows.Forms.Button cleanButton;
     }
 }
 

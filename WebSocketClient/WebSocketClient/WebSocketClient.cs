@@ -21,8 +21,10 @@ namespace WebSocketClient
 
         private Antennas antennas;
         private Tags tags;
+        private Distances distances;
+        private Angles angles;
 
-        private static UTF8Encoding encoding = new UTF8Encoding();
+        private bool filter;
 
         public WebSocketClient()
         {
@@ -33,6 +35,9 @@ namespace WebSocketClient
         {
             this.antennas = new Antennas();
             this.tags = new Tags();
+            this.distances = new Distances();
+            this.angles = new Angles();
+
 
             foreach (KeyValuePair<string, string> a in antennas.getList())
             {
@@ -43,9 +48,18 @@ namespace WebSocketClient
             {
                 this.listTags.Items.Add(t.Key);
             }
+            foreach (double d in distances.getList())
+            {
+                this.listDistances.Items.Add(d);
 
+            }
+            foreach (double a in angles.getList())
+            {
+                this.listAngles.Items.Add(a);
+            }
 
-
+            filter = true;
+            
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -53,25 +67,29 @@ namespace WebSocketClient
             if (serverUrl.Text != "" && serverUrl.Text != null)
             {
 
-                connectButton.Enabled = false;
-                disconnectButton.Enabled = true;
-                serverUrl.Enabled = false;
+                
 
-                using (client = new WebSocket(serverUrl.Text))
+                /*
+                  using (client = new WebSocket(serverUrl.Text))
+                  {
+
+
+                 */
+
+                if((this.filter == true && this.tagObject.Text != null && this.tagObject.Text != "") || this.filter == false)
                 {
-                    //client.CloseAsync();
+                    connectButton.Enabled = false;
+                    disconnectButton.Enabled = true;
+                    serverUrl.Enabled = false;
 
-                    Console.WriteLine("CONNECTING TO " + serverUrl.Text + " ..");
+                    client = new WebSocket(serverUrl.Text);
+
                     client.ConnectAsync();
 
-                    /*if (this.tagAntenna.Text == null || this.tagAntenna.Text == "")
+                    client.OnOpen += (sender1, e1) =>
                     {
-                        Console.WriteLine("Please enter a valid Antenna ..");
-                    }
-                    if (this.tagObject.Text == null || this.tagObject.Text == "")
-                    {
-                        Console.WriteLine("Please enter a valid object ..");
-                    }*/
+                        Console.WriteLine("CONNECTING TO " + serverUrl.Text + " .." + e1.ToString());
+                    };
 
                     client.OnMessage += (sender1, e1) =>
                     {
@@ -85,6 +103,9 @@ namespace WebSocketClient
                             {
                                 Console.WriteLine(a[i].ToString());
                             }
+
+                            this.Invoke((MethodInvoker)(() => messages.Items.Add(a.ToString())));
+
                             return;
                         }
                         if (e1.IsBinary)
@@ -100,9 +121,12 @@ namespace WebSocketClient
                         Console.WriteLine("Reason : " + e1.Reason);
                         Console.WriteLine("CLOSING ...");
 
+
                     };
-
-
+                }
+                else if(this.filter == true)
+                {
+                    Console.WriteLine("Please, select filters : object, distance and angle ..");
                 }
             }
             else
@@ -111,13 +135,13 @@ namespace WebSocketClient
             }
         }
 
-
-
         private void disconnectButton_Click(object sender, EventArgs e)
         {
             disconnectButton.Enabled = false;
             connectButton.Enabled = true;
             serverUrl.Enabled = true;
+            client.CloseAsync();
+            //client = null;
         }
 
         private void listAntennas_SelectedIndexChanged(object sender, EventArgs e)
@@ -145,27 +169,9 @@ namespace WebSocketClient
             string idObject = this.tags.getList()[curItem];
 
             this.labelIDObject.Text = idObject;
+
+            changeFileName();
         }
-
-        #region POUBELLE FAIL
-        // POUBELLE FAILS
-        private void serverUrl_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelObject_Click(object sender, EventArgs e)
-        {
-
-        }
-
-
-        #endregion
 
         private void tagAntenna_TextChanged(object sender, EventArgs e)
         {
@@ -190,6 +196,103 @@ namespace WebSocketClient
 
                 this.labelIDObject.Text = idObject;
             }
+        }
+
+        private void listDistances_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string curItem = listDistances.SelectedItem.ToString();
+
+            this.currentDistance.Text = curItem;
+
+            changeFileName();
+
+        }
+
+        private void listAngles_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string curItem = listAngles.SelectedItem.ToString();
+
+            this.currentAngle.Text = curItem;
+
+            changeFileName();
+
+        }
+
+        private void changeFileName()
+        {
+            string finalFile = "";
+
+            if (this.tagObject.Text != null && this.tagObject.Text != "")
+            {
+                finalFile += this.tagObject.Text + "_";
+            }
+
+            if (this.currentDistance.Text != null && this.currentDistance.Text != "" && this.currentDistance.Text != "*****")
+            {
+                finalFile += this.currentDistance.Text + "_";
+            }
+
+            if (this.currentAngle.Text != null && this.currentAngle.Text != "" && this.currentAngle.Text != "***")
+            {
+                finalFile += this.currentAngle.Text;
+            }
+
+            this.fileName.Text = finalFile;
+        }
+
+        private void testButton(object sender, EventArgs e)
+        {
+            this.filter = !this.filter;
+            if (!this.filter)
+            {
+                this.filters.Text = "OFF";
+            }
+            else
+            {
+                this.filters.Text = "ON";
+            }
+        }
+
+        #region POUBELLE FAIL
+        // POUBELLE FAILS
+        private void serverUrl_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void labelObject_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        private void cleanButton_Click(object sender, EventArgs e)
+        {
+            this.tagAntenna.Text = "";
+            this.tagObject.Text = "";
+
+            this.labelObject.Text = "";
+            this.labelIDObject.Text = "";
+            this.labelAntenna.Text = "";
+            this.labelIDAntenna.Text = "";
+
+            this.currentDistance.Text = "";
+            this.currentAngle.Text = "";
+
+            this.fileName.Text = "";
+
         }
     }
 }
