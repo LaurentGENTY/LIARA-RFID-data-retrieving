@@ -15,6 +15,7 @@ namespace WebSocketClient
             this.list = new Dictionary<string, string>();
 
             this.list.Add("Sel", "00000000001B2A4601001994");
+            this.list.Add("Poivre", "00000000001B2A4601001993");
             this.list.Add("Chaudron1", "00000000001B2A4601001987");
             this.list.Add("Chaudron2", "000000000000000000002740");
             this.list.Add("Chaudron3", "000000000000000000002741");

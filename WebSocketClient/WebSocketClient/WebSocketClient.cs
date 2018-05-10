@@ -12,6 +12,7 @@ using System.Threading;
 using System.Text;
 using WebSocketSharp;
 using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace WebSocketClient
 {
@@ -59,7 +60,7 @@ namespace WebSocketClient
             }
 
             filter = true;
-            
+
         }
 
         private void connectButton_Click(object sender, EventArgs e)
@@ -67,7 +68,7 @@ namespace WebSocketClient
             if (serverUrl.Text != "" && serverUrl.Text != null)
             {
 
-                
+
 
                 /*
                   using (client = new WebSocket(serverUrl.Text))
@@ -76,11 +77,17 @@ namespace WebSocketClient
 
                  */
 
-                if((this.filter == true && this.tagObject.Text != null && this.tagObject.Text != "") || this.filter == false)
+                if ((this.filter == true && this.tagObject.Text != null && this.tagObject.Text != "") || this.filter == false)
                 {
                     connectButton.Enabled = false;
                     disconnectButton.Enabled = true;
                     serverUrl.Enabled = false;
+
+                    //init les premières lignes du CSV : colonnes SI LE FICHIER NEXISTE PAS
+                    //faire une fonction qui vérifie les filtres ; verifie l'existence du fichier ; si oui delete TOUT sauf les colonnes
+                    //si non créé les colonnes
+
+                    //genere le filePath ici
 
                     client = new WebSocket(serverUrl.Text);
 
@@ -97,11 +104,24 @@ namespace WebSocketClient
                         {
                             JArray a = JArray.Parse(e1.Data);
 
-                            Console.WriteLine(e1.Data);
+                            //Console.WriteLine(a);
+                            //Console.WriteLine("---------0--------");
+                            //Console.WriteLine(a[0]);
+                            //Console.WriteLine("---------1--------");
+                            //Console.WriteLine(a[1]);
+
+                            StringBuilder csv = new StringBuilder();
 
                             for (int i = 0; i < a.Count; i++)
                             {
-                                Console.WriteLine(a[i].ToString());
+                                //si l'objet est sélectionné et qu'il est dans une row d'un enregistrement ie. s'il est présent et qu'on veut le capter
+                                //EXEMPLE : si on a le sel et le poivre : si je clique sur Sel alors je n'aurais que les parties de JArray qui sont pour le sel
+                                if (a[i]["RFIDTagNames_ID_FK"].ToString() == this.labelIDObject.Text && this.filter == true)
+                                {
+                                    writingCSV(csv, a[i]);
+                                }
+
+                                //File.WriteAllText(filePath, csv.ToString());
                             }
 
                             this.Invoke((MethodInvoker)(() => messages.Items.Add(a.ToString())));
@@ -124,7 +144,7 @@ namespace WebSocketClient
 
                     };
                 }
-                else if(this.filter == true)
+                else if (this.filter == true)
                 {
                     Console.WriteLine("Please, select filters : object, distance and angle ..");
                 }
@@ -133,6 +153,34 @@ namespace WebSocketClient
             {
                 Console.WriteLine("Please, enter an URL ..");
             }
+        }
+
+        private void writingCSV(StringBuilder csv, JToken jToken)
+        {
+            //liste de string que l'on va ajouter dans la row
+            //text[0] = timestamp
+            //text[1-8] = les rssi de chaque antenne
+
+            string[] text = new string[9];
+
+            //on recup le temps
+            text[0] = jToken["TimeStamp"].ToString();
+
+
+            //permet de recup le numéro de l'antenne afin de le mettre dans la case de CSV adéquat
+            if (this.antennas.getRevert().ContainsKey(jToken["RFID_Antennas_ID_FK"].ToString()))
+            {
+                Console.WriteLine("good");
+            }
+
+            /*string second = image.ToString();*/
+
+
+            var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", text);
+            csv.AppendLine(newLine);
+
+            Console.WriteLine(jToken.ToString());
+
         }
 
         private void disconnectButton_Click(object sender, EventArgs e)
