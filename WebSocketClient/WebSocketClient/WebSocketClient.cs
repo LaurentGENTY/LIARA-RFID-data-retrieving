@@ -67,14 +67,9 @@ namespace WebSocketClient
         {
             if (serverUrl.Text != "" && serverUrl.Text != null)
             {
-
-
-
                 /*
                   using (client = new WebSocket(serverUrl.Text))
                   {
-
-
                  */
 
                 if ((this.filter == true && this.tagObject.Text != null && this.tagObject.Text != "") || this.filter == false)
@@ -83,11 +78,12 @@ namespace WebSocketClient
                     disconnectButton.Enabled = true;
                     serverUrl.Enabled = false;
 
+                    //correspond au nombre d'échantillons ajoutés dans les lignes : on en veut 100 au maximum
+                    int n = 0;
+
                     //init les premières lignes du CSV : colonnes SI LE FICHIER NEXISTE PAS
                     //faire une fonction qui vérifie les filtres ; verifie l'existence du fichier ; si oui delete TOUT sauf les colonnes
                     //si non créé les colonnes
-
-                    //genere le filePath ici
 
                     client = new WebSocket(serverUrl.Text);
 
@@ -96,6 +92,12 @@ namespace WebSocketClient
                     client.OnOpen += (sender1, e1) =>
                     {
                         Console.WriteLine("CONNECTING TO " + serverUrl.Text + " .." + e1.ToString());
+
+                        //variables d'écriture du fichier
+                        StringBuilder csv = new StringBuilder();
+                        string filePath = "xp/" + this.fileName.Text + this.formatFile.Text;
+
+                        initFile(filePath, csv);
                     };
 
                     client.OnMessage += (sender1, e1) =>
@@ -104,30 +106,73 @@ namespace WebSocketClient
                         {
                             JArray a = JArray.Parse(e1.Data);
 
-                            //Console.WriteLine(a);
-                            //Console.WriteLine("---------0--------");
-                            //Console.WriteLine(a[0]);
-                            //Console.WriteLine("---------1--------");
-                            //Console.WriteLine(a[1]);
+                            bool canAppend = false;
 
+                            //variables d'écriture du fichier
                             StringBuilder csv = new StringBuilder();
+                            string filePath = "xp/" + this.fileName.Text + this.formatFile.Text;
+
+                            //liste de string que l'on va ajouter dans la row
+                            //text[0] = timestamp
+                            //text[1-8] = les rssi de chaque antenne
+                            string[] text = new string[9];
+
+                            initText(text);
 
                             for (int i = 0; i < a.Count; i++)
                             {
+                                //on recup le temps : dans une row tous les timestamp sont les memes
+                                
+
+                                text[0] = DateTime.Parse(a[i]["Timestamp"].ToString()).ToString();
+
                                 //si l'objet est sélectionné et qu'il est dans une row d'un enregistrement ie. s'il est présent et qu'on veut le capter
                                 //EXEMPLE : si on a le sel et le poivre : si je clique sur Sel alors je n'aurais que les parties de JArray qui sont pour le sel
                                 if (a[i]["RFIDTagNames_ID_FK"].ToString() == this.labelIDObject.Text && this.filter == true)
                                 {
-                                    writingCSV(csv, a[i]);
+                                    fillText(a[i],text);
                                 }
 
-                                //File.WriteAllText(filePath, csv.ToString());
+                                //On va verifier que l'antenne que l'on a selectionné recoit bien un signal : en effet si l'on fait des tests
+                                //sur l'antenne 1 et que l'objet est assez loin pour ne pas le capter mais que les autres antennes le captent, on veut
+                                //seulement les row que l'antenne choisie capte
+                                if (a[i]["RFID_Antennas_ID_FK"].ToString() == this.labelIDAntenna.Text && this.filter == true)
+                                {
+                                    canAppend = true;
+                                }
                             }
 
                             this.Invoke((MethodInvoker)(() => messages.Items.Add(a.ToString())));
 
+                            //a la fin du listage de toutes les cases du JArray on peut ajouter dans le fichier CSV la ligne QUE SI LA DITE
+                            //ANTENNE A DETECTE
+                            if (canAppend)
+                            {
+                                if (this.fileName.Text != null && this.fileName.Text != "")
+                                {
+                                    //on append la ligne dans le stringbuilder
+                                    //exemple : le sel a été detecté par l'antenne 1,2 et 3 au temps t1
+                                    //newLine = t1;-25;-45,6;-55;-99;-99;-99;-99;-99;-99;
+                                    var newLine = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", text);
+                                    csv.AppendLine(newLine);
+
+                                    //on ajoute la ligne dans le fichier csv
+                                    this.Invoke((MethodInvoker)(() => File.AppendAllText(filePath, csv.ToString())));
+
+                                    n++;
+
+                                    if(n >= 100)
+                                    {
+                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender,e)));
+                                    }
+
+                                    //le fichier sera donc constitué d'une liste de lignes avec les RSSI pour les antennes à des timestamp différents
+                                }
+                            }
+
                             return;
                         }
+
                         if (e1.IsBinary)
                         {
                             Console.WriteLine("Server says: " + e1.RawData);
@@ -140,8 +185,6 @@ namespace WebSocketClient
                         Console.WriteLine("Code : " + e1.Code);
                         Console.WriteLine("Reason : " + e1.Reason);
                         Console.WriteLine("CLOSING ...");
-
-
                     };
                 }
                 else if (this.filter == true)
@@ -155,32 +198,54 @@ namespace WebSocketClient
             }
         }
 
-        private void writingCSV(StringBuilder csv, JToken jToken)
+        private void initFile(string filePath, StringBuilder csv)
         {
-            //liste de string que l'on va ajouter dans la row
-            //text[0] = timestamp
-            //text[1-8] = les rssi de chaque antenne
-
-            string[] text = new string[9];
-
-            //on recup le temps
-            text[0] = jToken["TimeStamp"].ToString();
-
-
-            //permet de recup le numéro de l'antenne afin de le mettre dans la case de CSV adéquat
-            if (this.antennas.getRevert().ContainsKey(jToken["RFID_Antennas_ID_FK"].ToString()))
+            if (!File.Exists(filePath))
             {
-                Console.WriteLine("good");
+                this.Invoke((MethodInvoker)(() => File.Create(filePath)));
+            }
+            else
+            {
+                this.Invoke((MethodInvoker)(() => File.Delete(filePath)));
             }
 
-            /*string second = image.ToString();*/
+            string[] formatColumns = new string[9];
+            formatColumns[0] = "timestamp";
+            for (int i = 1; i < 9; i++)
+            {
+                formatColumns[i] = "rssi" + i;
+            }
 
+            var formatCSV = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", formatColumns);
+            csv.AppendLine(formatCSV);
 
-            var newLine = string.Format("{0},{1},{2},{3},{4},{5},{6},{7},{8}", text);
-            csv.AppendLine(newLine);
+            //on ajoute la ligne dans le fichier csv
+            this.Invoke((MethodInvoker)(() => File.AppendAllText(filePath, csv.ToString())));
+        }
+
+        private void initText(string[] text)
+        {    
+            //on met toutes les forces de signaux à -99 au début
+            for (int i = 1; i < text.Count(); i++)
+            {
+                text[i] = "-99";
+            }
+        }
+
+        private void fillText(JToken jToken, string[] text)
+        {
+            //permet de recup le numéro de l'antenne afin de le mettre dans la case de CSV adéquat
+            //dans le current jToken (case du JArray de base) on a qu'une antenne
+            if (this.antennas.getRevert().ContainsKey(jToken["RFID_Antennas_ID_FK"].ToString()))
+            {
+                //on récupère l'index de l'antenne pour le rajouter dans la string de la row
+                int index = this.antennas.getRevert()[jToken["RFID_Antennas_ID_FK"].ToString()];
+
+                //on stocke la valeur du 
+                text[index] = jToken["RSSIValue"].ToString();
+            }
 
             Console.WriteLine(jToken.ToString());
-
         }
 
         private void disconnectButton_Click(object sender, EventArgs e)
@@ -189,7 +254,6 @@ namespace WebSocketClient
             connectButton.Enabled = true;
             serverUrl.Enabled = true;
             client.CloseAsync();
-            //client = null;
         }
 
         private void listAntennas_SelectedIndexChanged(object sender, EventArgs e)

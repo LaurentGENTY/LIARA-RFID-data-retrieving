@@ -29,7 +29,6 @@ namespace WebSocketClient
             this.list.Add(160);
             this.list.Add(180);
             this.list.Add(200);
-
         }
 
         public List<double> getList()

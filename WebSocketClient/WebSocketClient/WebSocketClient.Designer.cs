@@ -54,7 +54,7 @@
             this.labelIDAntenna = new System.Windows.Forms.Label();
             this.labelIDObject = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.formatFile = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -311,14 +311,14 @@
             this.label11.TabIndex = 27;
             this.label11.Text = "Messages Log :";
             // 
-            // textBox1
+            // formatFile
             // 
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(653, 31);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(37, 22);
-            this.textBox1.TabIndex = 30;
-            this.textBox1.Text = ".csv";
+            this.formatFile.Enabled = false;
+            this.formatFile.Location = new System.Drawing.Point(653, 31);
+            this.formatFile.Name = "formatFile";
+            this.formatFile.Size = new System.Drawing.Size(37, 22);
+            this.formatFile.TabIndex = 30;
+            this.formatFile.Text = ".csv";
             // 
             // label15
             // 
@@ -477,7 +477,7 @@
             this.Controls.Add(this.listAngles);
             this.Controls.Add(this.label17);
             this.Controls.Add(this.label18);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.formatFile);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label11);
@@ -542,7 +542,7 @@
         private System.Windows.Forms.Label labelIDAntenna;
         private System.Windows.Forms.Label labelIDObject;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox formatFile;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label17;
