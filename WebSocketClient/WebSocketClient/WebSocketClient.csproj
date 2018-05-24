@@ -53,6 +53,12 @@
   <ItemGroup>
     <Compile Include="Angles.cs" />
     <Compile Include="Antennas.cs" />
+    <Compile Include="data.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="data.Designer.cs">
+      <DependentUpon>data.cs</DependentUpon>
+    </Compile>
     <Compile Include="Distances.cs" />
     <Compile Include="Tags.cs" />
     <Compile Include="WebSocketClient.cs">
@@ -63,6 +69,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="data.resx">
+      <DependentUpon>data.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="WebSocketClient.resx">
       <DependentUpon>WebSocketClient.cs</DependentUpon>
     </EmbeddedResource>

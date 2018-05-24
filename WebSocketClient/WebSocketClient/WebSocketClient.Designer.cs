@@ -70,21 +70,26 @@
             this.button1 = new System.Windows.Forms.Button();
             this.filters = new System.Windows.Forms.Label();
             this.cleanButton = new System.Windows.Forms.Button();
+            this.progressBar = new System.Windows.Forms.ProgressBar();
+            this.label22 = new System.Windows.Forms.Label();
+            this.switchButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // messages
             // 
             this.messages.FormattingEnabled = true;
+            this.messages.HorizontalExtent = 10000;
+            this.messages.HorizontalScrollbar = true;
             this.messages.ItemHeight = 16;
-            this.messages.Location = new System.Drawing.Point(16, 326);
+            this.messages.Location = new System.Drawing.Point(12, 329);
             this.messages.Name = "messages";
-            this.messages.Size = new System.Drawing.Size(1105, 276);
+            this.messages.Size = new System.Drawing.Size(1105, 244);
             this.messages.TabIndex = 1;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 9);
+            this.label1.Location = new System.Drawing.Point(9, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(108, 17);
             this.label1.TabIndex = 2;
@@ -243,6 +248,7 @@
             this.label14.Size = new System.Drawing.Size(74, 17);
             this.label14.TabIndex = 20;
             this.label14.Text = "ID Object :";
+            this.label14.Click += new System.EventHandler(this.label14_Click);
             // 
             // connectButton
             // 
@@ -459,11 +465,42 @@
             this.cleanButton.UseVisualStyleBackColor = true;
             this.cleanButton.Click += new System.EventHandler(this.cleanButton_Click);
             // 
+            // progressBar
+            // 
+            this.progressBar.Location = new System.Drawing.Point(108, 584);
+            this.progressBar.Name = "progressBar";
+            this.progressBar.Size = new System.Drawing.Size(868, 23);
+            this.progressBar.Step = 1;
+            this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar.TabIndex = 46;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(12, 586);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(93, 17);
+            this.label22.TabIndex = 47;
+            this.label22.Text = "File creation :";
+            // 
+            // switchButton
+            // 
+            this.switchButton.Location = new System.Drawing.Point(985, 579);
+            this.switchButton.Name = "switchButton";
+            this.switchButton.Size = new System.Drawing.Size(136, 31);
+            this.switchButton.TabIndex = 48;
+            this.switchButton.Text = "Switch Form";
+            this.switchButton.UseVisualStyleBackColor = true;
+            this.switchButton.Click += new System.EventHandler(this.switchButton_Click);
+            // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 621);
+            this.Controls.Add(this.switchButton);
+            this.Controls.Add(this.label22);
+            this.Controls.Add(this.progressBar);
             this.Controls.Add(this.cleanButton);
             this.Controls.Add(this.filters);
             this.Controls.Add(this.button1);
@@ -558,6 +595,9 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label filters;
         private System.Windows.Forms.Button cleanButton;
+        private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button switchButton;
     }
 }
 
