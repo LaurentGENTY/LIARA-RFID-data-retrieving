@@ -78,34 +78,22 @@ Use :
             - standard deviation
             - average of time for a sample
 
-            * format of `data.csv` : `[Name of the experiment[Object]_[distance]_[angle]];[Total of Samples];[Average];[Standard Deviation]`
-
+            - format of `data.csv` : `[Name of the experiment[Object]_[distance]_[angle]];[Total of Samples];[Average];[Standard Deviation]`
           - `finalData.csv` : the final csv file which contains every average of RSSI values for every couple distance/angle. With this file the python script will generate the heatmap and the wireframe
-
           - format of finalData.csv : double entry table : `Distance;0[°];23[°];45[°];90[°];120[°];180[°]`
-
         - 2d/ :
           - every 2D graphs (as PNG) which shows us the divition between every samples during the experiment AND the average and the experiment for every couple distance/angle
-
             - format of PNG files : `[Object]_[distance]_[angle].png`
-
         - 2ddistanceangle/ :
           - the recap between every curves for each couple distance/angle
-
             - format of `output.png` : 6 curves (one for each angle previously quoted) ; `XAxis : distance / YAxis : RSSI Value`
-
         - 3d/ :
           - the recap in 3D (as a WireFrame graph) of all average of the couple distance/angle
-
             - format of `3d.png` : 78 dots in 3d for every couple distance/angle ; `XAxis : Angle / YAxis : Distance / ZAxis : RSSI Value`
-
             WARNING : remember, if you use Python script to execute the script, it will be easier to read the data on this WireFrame (because you will be able to rotate, zoom, change the scale...)
-
         - heatmap/ :
           - the resulted heatmap generated with the `finalData.csv` file : average of every RSSI value for every couple distance/angle
-
             - format of `heatmap.png` : a scale of colours for every RSSI value on the right of the heatmap ; `XAxis : Distance / YAxis : Angle`
-
 
 TO REMEMBER :
   - if you want to generate graphs and stuff with the python script REMEMBER to retrieve data for every couple distance/angle otherwise
