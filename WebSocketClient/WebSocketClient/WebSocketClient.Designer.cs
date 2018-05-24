@@ -72,7 +72,6 @@
             this.cleanButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label22 = new System.Windows.Forms.Label();
-            this.switchButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // messages
@@ -469,7 +468,7 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(108, 584);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(868, 23);
+            this.progressBar.Size = new System.Drawing.Size(1009, 23);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 46;
@@ -483,22 +482,11 @@
             this.label22.TabIndex = 47;
             this.label22.Text = "File creation :";
             // 
-            // switchButton
-            // 
-            this.switchButton.Location = new System.Drawing.Point(985, 579);
-            this.switchButton.Name = "switchButton";
-            this.switchButton.Size = new System.Drawing.Size(136, 31);
-            this.switchButton.TabIndex = 48;
-            this.switchButton.Text = "Switch Form";
-            this.switchButton.UseVisualStyleBackColor = true;
-            this.switchButton.Click += new System.EventHandler(this.switchButton_Click);
-            // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 621);
-            this.Controls.Add(this.switchButton);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.cleanButton);
@@ -597,7 +585,6 @@
         private System.Windows.Forms.Button cleanButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Button switchButton;
     }
 }
 
