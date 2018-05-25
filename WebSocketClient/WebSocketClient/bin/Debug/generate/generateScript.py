@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[6]:
+# In[2]:
 
 
 import pandas as pd
@@ -305,6 +305,8 @@ for (i, distance) in enumerate(distances):
     
     del averagesRSSI
 
+
+pbar.finish()
 
 generation2DDistanceAngle()
     
