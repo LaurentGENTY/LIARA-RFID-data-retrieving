@@ -59,7 +59,7 @@ def finalDataExist() :
 # ------------------- VERIFICATION S'IL EXISTE LES DONNEES NECESSAIRES POUR LES GRAPHS ----------------
 def verifyFiles() :
 
-    answer = input("Which object do you use to generate data ?\n")
+    answer = input("Which object do you want to use to generate data ?\n")
     
     if answer == '__pycache__':
         print("Do not try to fool me !")
