@@ -72,6 +72,7 @@
             this.cleanButton = new System.Windows.Forms.Button();
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label22 = new System.Windows.Forms.Label();
+            this.clearButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // messages
@@ -468,7 +469,7 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(108, 584);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(1009, 23);
+            this.progressBar.Size = new System.Drawing.Size(854, 23);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 46;
@@ -482,11 +483,22 @@
             this.label22.TabIndex = 47;
             this.label22.Text = "File creation :";
             // 
+            // clearButton
+            // 
+            this.clearButton.Location = new System.Drawing.Point(968, 584);
+            this.clearButton.Name = "clearButton";
+            this.clearButton.Size = new System.Drawing.Size(149, 23);
+            this.clearButton.TabIndex = 48;
+            this.clearButton.Text = "Clear All Files";
+            this.clearButton.UseVisualStyleBackColor = true;
+            this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
+            // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 621);
+            this.Controls.Add(this.clearButton);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.progressBar);
             this.Controls.Add(this.cleanButton);
@@ -585,6 +597,7 @@
         private System.Windows.Forms.Button cleanButton;
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Button clearButton;
     }
 }
 

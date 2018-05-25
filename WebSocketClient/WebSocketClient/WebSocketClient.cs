@@ -468,6 +468,38 @@ namespace WebSocketClient
             data.Show();
             this.Hide();
         }
+
+        private void clearButton_Click(object sender, EventArgs e)
+        {
+            var confirmResult = MessageBox.Show("Are you sure to delete all the data??",
+                                     "Confirm Delete",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.Yes)
+            {
+                //Permet de clear tous les files de données
+                //On va delete tous les fichiers dans les folders du nom des objets selectionnés :
+                //On va delete le folder Sel/, le folder Pates/ ...
+
+                string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\xp\\";
+
+                string[] filePaths = Directory.GetDirectories(path);
+
+
+                foreach (string filePath in filePaths)
+                {
+                    //on récupère juste le nom du folder, pas le path
+                    string folder = filePath.Split('\\').Last();
+
+                    foreach (string obj in this.tags.getList().Keys)
+                    {
+                        if (obj == folder)
+                        {
+                            Directory.Delete(filePath, true);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
