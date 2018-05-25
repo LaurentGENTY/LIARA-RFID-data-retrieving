@@ -84,6 +84,8 @@ namespace WebSocketClient
                     disconnectButton.Enabled = true;
                     serverUrl.Enabled = false;
 
+                    createFolder(this.tagObject.Text);
+
                     beginning = DateTime.Now;
 
                     this.Invoke((MethodInvoker)(() => progressBar.Value = 0));
@@ -99,7 +101,7 @@ namespace WebSocketClient
 
                     //variables d'écriture du fichier
                     StringBuilder format = new StringBuilder();
-                    string filePath = "xp/" + this.fileName.Text + this.formatFile.Text;
+                    string filePath = "xp/"+ this.tagObject.Text + "/" + this.fileName.Text + this.formatFile.Text;
 
                     //on créer le fichier et on l'init de manière ASYNCHRONE : sinon l'écriture + ouverture peut provoquer des conflits
                     initFile(filePath, format);
@@ -217,6 +219,21 @@ namespace WebSocketClient
             else
             {
                 Console.WriteLine("Please, enter an URL ..");
+            }
+        }
+
+        private void createFolder(string obj)
+        {
+            string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\xp\\" + obj + "\\";
+
+            if (Directory.Exists(path))
+            {
+                Console.WriteLine("The directory exists. We're fine !");
+            }
+            else
+            {
+                Console.WriteLine("The directory doesn't exist : creation of the directory");
+                Directory.CreateDirectory(path);
             }
         }
 
