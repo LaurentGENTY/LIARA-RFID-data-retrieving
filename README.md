@@ -26,13 +26,14 @@ Installations :
     * matplotlib
     * numpy
     * mpl_toolkits
+    * progressbar2
 
 - Any IDE (but developper with Visual Studio Community 2017)
 
 * That's all !
 
 - OPTIONNAL
-  - Anaconda Navigator -> Jupyter : thanks to this software, most of the previous libraries will be already installed. However, the use of Jupyter (compilation, coding, etc...) has few defaults such as you won't be able to manipulate interactively the generated graphs.
+  - Anaconda Navigator -> Jupyter : thanks to this software, most of the previous libraries will be already installed. However, the use of Jupyter (compilation, coding, etc...) has few defaults such as you won't be able to manipulate interactively the generated graphs. But if libraries are not installed (suchs as progressbar2 or pandas_datareader... if I remember right) you can install them with the Anaconda Prompt by following the same commands as before
 
 Use :
   The project is divided in 2 parts : the data's retrieve and the data's process. To organize your experiment protocol you can read (in French though)
