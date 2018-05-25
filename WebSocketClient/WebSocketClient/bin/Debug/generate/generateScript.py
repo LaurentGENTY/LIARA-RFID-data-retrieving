@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[20]:
+# In[9]:
 
 
 import pandas as pd
@@ -14,6 +14,8 @@ from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 
 import glob, os
+import time
+import sys
 
 #fonction qui renvoie le bon path
 def getPath() :
@@ -21,21 +23,23 @@ def getPath() :
     #Path courant
     cwd = os.getcwd()
     #C:\Users\laure\WebSocketClientCSharp\WebSocketClient\generate
-    print(cwd)
 
     #On va changer de path (cwd, '../WebSocketClient/bin/Debug/xp/'))
     os.chdir('../xp/')
-    print(os.getcwd())
+    
+    #print("Path changed. New path is : "+ os.getcwd())
 
     return;
 
+# ------------------- CREATION FICHIER FINAL : CONTIENT TOUTES LES MOYENNES ----------------
 def finalDataExist() :
     #On va remplir le fichier final : tester s'il existe
     #Si le fichier n'existe pas on le crée
     
     if os.path.isfile('data/finalData.csv') is True:
         os.remove('data/finalData.csv')
-        
+    
+    #On le créer
     open('data/finalData.csv', 'a').close()        
         
     #On écrit le nom des colonnes
@@ -46,9 +50,50 @@ def finalDataExist() :
         
     return;
 
-#----------- TO DO -------------
-#Fonction permettant de delete tous les précédentes data
+# ------------------- VERIFICATION S'IL EXISTE LES DONNEES NECESSAIRES POUR LES GRAPHS ----------------
+def verifyFiles() :
+
+    answer = input("Which object do you use to generate data ?\n")
+    
+    if answer == '__pycache__':
+        print("Do not try to fool me !")
+        sys.exit("Wrong directory")
+        
+    if os.path.isdir(answer):
+        
+        numfiles = len([f for f in os.listdir(answer) if os.path.isfile(os.path.join(answer, f)) and f[0] != '.'])        
+        
+        #Le nombre total de fichiers csv
+        if numfiles != 78:
+            sys.exit("Not enough data ! Make sure you collected all the necessary data before you execute this script")
+        else:
+            os.chdir(answer)
+            print(os.getcwd())
+        
+    else:
+        sys.exit("The data's object doesn't exist. Make sure you collected all the necessary data before you execute this script")
+
+    
+    return;
+
+#Fonction permettant de delete tous les graphs et images
 def clearAll() :
+    
+    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap']
+    
+    for temp in folders:
+    
+        for the_file in os.listdir(temp):
+            file_path = os.path.join(temp, the_file)
+        
+            try:
+                if os.path.isfile(file_path):
+                    os.unlink(file_path)
+        
+                #elif os.path.isdir(file_path): shutil.rmtree(file_path)
+            except Exception as e:
+                print(e)
+    
     return;
     
 def generationHeatMap() :
@@ -103,7 +148,7 @@ def generationWireFrame() :
 
 
     #Données à l'intérieur de la matrice
-    data = angle[np.newaxis,:] / distance[:,np.newaxis] 
+    data = (50 + angle[np.newaxis,:]) / (10 + np.sqrt(distance[:,np.newaxis])) 
 
     #Setup du plot
     fig = plt.figure()
@@ -135,17 +180,30 @@ def generationWireFrame() :
 #...
 #------------------------------------------------------------------
 
+#os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
+#os.chdir('../')
+
 #On change le directory
 getPath()
+
+verifyFiles()
+
+#On va nettoyer les potentiels anciens fichiers
+clearAll()
 
 #Liste des angles permettant d'effectuer les lectures pour les algo
 distances = ['0','5','10','15','25','40','60','80','100','120','140','160','180','200']
 
 finalDataExist()
 
+
+#On est dans le folder de l'objet courant
+
 for (i, distance) in enumerate(distances):
     #i = index
     #distance = distance courante
+    
+
     
     #Nous allons stocker les moyennes des RSSI pour chaque couple distance/angle
     averagesRSSI = {}
@@ -237,4 +295,6 @@ generation2DDistanceAngle()
 generationHeatMap()
 
 generationWireFrame()
+
+os.chdir('../')
 
