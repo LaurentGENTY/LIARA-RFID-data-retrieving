@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[9]:
+# In[6]:
 
 
 import pandas as pd
@@ -16,10 +16,16 @@ import matplotlib.pyplot as plt
 import glob, os
 import time
 import sys
+import inspect
+
+from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA,     AdaptiveETA, FileTransferSpeed, FormatLabel, Percentage,     ProgressBar, ReverseBar, RotatingMarker, SimpleProgress, Timer
 
 #fonction qui renvoie le bon path
 def getPath() :
     
+    #Renvoie le path courant aussi
+    #print(os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe()))))
+
     #Path courant
     cwd = os.getcwd()
     #C:\Users\laure\WebSocketClientCSharp\WebSocketClient\generate
@@ -68,7 +74,7 @@ def verifyFiles() :
             sys.exit("Not enough data ! Make sure you collected all the necessary data before you execute this script")
         else:
             os.chdir(answer)
-            print(os.getcwd())
+            #print(os.getcwd())
         
     else:
         sys.exit("The data's object doesn't exist. Make sure you collected all the necessary data before you execute this script")
@@ -119,6 +125,7 @@ def generationHeatMap() :
 
     plt.show()
     plt.close()
+    
 
     return;
 
@@ -133,7 +140,7 @@ def generation2DDistanceAngle() :
     
     fig = df.plot().get_figure()
     fig.savefig("data/2ddistanceangle/output.png")
-    plt.show(block=False)
+    plt.show()
     plt.close(fig)
     
     return;
@@ -169,9 +176,14 @@ def generationWireFrame() :
     #On la'ffiche et on l'enregistre
     plt.savefig('data/3d/3d.png')
     plt.show()
-
-
+    
     return;
+
+def setupBar() :
+    widgets = [Bar('>'), ' ', ETA(), ' ', ReverseBar('<')]
+    pbar = ProgressBar(widgets=widgets, maxval=78).start()
+    
+    return pbar;
 
 #------------------------------------------------------------------
 #on va générer les csv des moyennes pour chaque Angle
@@ -180,8 +192,9 @@ def generationWireFrame() :
 #...
 #------------------------------------------------------------------
 
+#IN CASE OF UNINTENDED INTERRUPTION OF THE SCRIPT : PLEASE UNCOMMENT THE NEXT LINE WITH THE GOOD PATH
+# ---------- 'C:/path/to/add/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate' ----------
 #os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
-#os.chdir('../')
 
 #On change le directory
 getPath()
@@ -196,14 +209,16 @@ distances = ['0','5','10','15','25','40','60','80','100','120','140','160','180'
 
 finalDataExist()
 
-
 #On est dans le folder de l'objet courant
+
+#On va setup la progressBar
+
+pbar = setupBar()
+ite = 1
 
 for (i, distance) in enumerate(distances):
     #i = index
     #distance = distance courante
-    
-
     
     #Nous allons stocker les moyennes des RSSI pour chaque couple distance/angle
     averagesRSSI = {}
@@ -222,7 +237,6 @@ for (i, distance) in enumerate(distances):
         #Alors on va lire le fichier
         
         if parts[1] == distance:  
-            print(file)
             filePath = os.getcwd().replace("\\","/")+"/"+file
 
             # --------------- CONSTRUCTION GRAPHE 2D RSSI / TIME -------------------------
@@ -271,20 +285,22 @@ for (i, distance) in enumerate(distances):
                 
             #----------------------------------------------------------------------
             
+            #Update de la bar
+            pbar.update(ite)
+            ite = ite + 1
                 
         del parts
     
-    print(averagesRSSI)
+    #print(averagesRSSI)
     #Maintenant que notre dictionnary des moyennes pour chaque couple Distance / Angle
     
     if bool(averagesRSSI) is True:
         final = distance + ';' + str(averagesRSSI["0"]) + ';'+ str(averagesRSSI["23"]) + ';' + str(averagesRSSI["45"]) + ';' + str(averagesRSSI["90"]) + ';' + str(averagesRSSI["120"]) + ';' + str(averagesRSSI["180"])
-        print(final)
+        #print(final)
         
         with open('data/finalData.csv', 'a') as the_file:
                 the_file.write(final)
                 the_file.write('\n')
-    
     
     
     del averagesRSSI

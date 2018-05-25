@@ -95,6 +95,12 @@ Use :
           - the resulted heatmap generated with the `finalData.csv` file : average of every RSSI value for every couple distance/angle
             - format of `heatmap.png` : a scale of colours for every RSSI value on the right of the heatmap ; `XAxis : Distance / YAxis : Angle`
 
+WARNING :
+  If you shut down the Python script during the run of the application, you will have to uncomment a line in the script :
+  line 197 : `#os.chdir('C:/path/to/add/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')`
+  Indeed, in the first version, you have to be in the right path and to do so you have to get your project path in the `WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate` and Run the script again and everything will be fine
+
+
 TO REMEMBER :
   - if you want to generate graphs and stuff with the python script REMEMBER to retrieve data for every couple distance/angle otherwise
   you won't be able to generate the graphs
