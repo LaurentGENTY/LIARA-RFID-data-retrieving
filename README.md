@@ -99,4 +99,4 @@ TO REMEMBER :
   - if you want to generate graphs and stuff with the python script REMEMBER to retrieve data for every couple distance/angle otherwise
   you won't be able to generate the graphs
   - the pandas_datareader error is very important because you won't be able to to execute the python script
-  - the first version of this project only works if you select the Salt as the object AND the first antenna (which means you can retrieve data only from the first antenna)
+  - the first version of this project only works if you select the first antenna (which means you can retrieve data only from the first antenna)
