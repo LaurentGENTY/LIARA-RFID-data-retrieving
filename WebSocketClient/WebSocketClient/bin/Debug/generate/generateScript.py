@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[6]:
 
 
 import pandas as pd
@@ -58,28 +58,40 @@ def finalDataExist() :
 
 # ------------------- VERIFICATION S'IL EXISTE LES DONNEES NECESSAIRES POUR LES GRAPHS ----------------
 def verifyFiles() :
-
-    answer = input("Which object do you want to use to generate data ?\n")
     
-    if answer == '__pycache__':
-        print("Do not try to fool me !")
-        sys.exit("Wrong directory")
+    ok = False
+    print("Which object do you want to use to generate data ?\n")
+    
+    while(ok is False):
         
-    if os.path.isdir(answer):
+        answer = input(">> ")
         
-        numfiles = len([f for f in os.listdir(answer) if os.path.isfile(os.path.join(answer, f)) and f[0] != '.'])        
+        if answer == '__pycache__':
+            print("Do not try to fool me !")
         
-        #Le nombre total de fichiers csv
-        if numfiles != 78:
-            sys.exit("Not enough data ! Make sure you collected all the necessary data before you execute this script")
+        if answer == 'exit':
+            sys.exit("The program will shut down now.")
+        
+        #Si la réponse est un dossier qui existe
+        if os.path.isdir(answer):
+            #On compte le nombre de fichier à l'intérieur (non récursif)
+            numfiles = len([f for f in os.listdir(answer) if os.path.isfile(os.path.join(answer, f)) and f[0] != '.'])        
+        
+            #Le nombre total de fichiers csv
+            if numfiles != 78:
+                print("Not enough data ! Make sure you collected all the necessary data before you execute this script")
+                print("Please, enter the name of the directory again")
+
+            #Si le dossier existe ET qu'il y a assez de fichiers pour générer les données alors c'est bon
+            else:
+                ok = True
+                
+        #Si le dossier n'existe pas alors cela veut dire que l'on ne possède pas assez de données
         else:
-            os.chdir(answer)
-            #print(os.getcwd())
-        
-    else:
-        sys.exit("The data's object doesn't exist. Make sure you collected all the necessary data before you execute this script")
-
+            print("The data's object doesn't exist. Make sure you collected all the necessary data before you execute this script")
+            print("Please, enter the name of the directory again")
     
+    os.chdir(answer)
     return;
 
 #Fonction permettant de delete tous les graphs et images
@@ -185,6 +197,44 @@ def setupBar() :
     
     return pbar;
 
+def chooseAntenna() :
+    
+    #Fonction qui permet de choisir de générer les données pour une antenne
+    ok = False
+    print("Which antenna do you want to choose to extract the data ?\n")
+    
+    antennas = [1,2,3,4,5,6,7,8]
+    
+    while ok is False :
+
+        answer = input(">> Antenna ")
+        
+        if answer == 'exit':
+            sys.exit("The program will shut down now.")
+        
+        x = 0
+        found = False
+        
+        #Tant qu'on a pas trouvé et que X est plus petit que la taille du array
+        
+        while found is False and x < len(antennas) :
+            
+            #Si la réponse existe dans le tableau des antennes
+            
+            temp = str(antennas[x])
+            if temp == answer:
+                
+                found = True
+                ok = True
+                antenna = "rssi"+str(x+1)
+            
+            x=x+1
+                
+        if found is False:
+            print("Antenna not found")
+    
+    return antenna;
+
 #------------------------------------------------------------------
 #on va générer les csv des moyennes pour chaque Angle
 #On va parcourir tous les CSV ayant la même distance pour un angle
@@ -200,6 +250,8 @@ def setupBar() :
 getPath()
 
 verifyFiles()
+
+antenna = chooseAntenna()
 
 #On va nettoyer les potentiels anciens fichiers
 clearAll()
@@ -245,10 +297,10 @@ for (i, distance) in enumerate(distances):
 
             #Moyenne -------------
             #On dit que c'est un float
-            df['rssi1'] =df.astype(float)
+            df[antenna] = df.astype(float)
 
             #On fait la moyenne de la première colonne
-            average = df['rssi1'].mean()
+            average = df[antenna].mean()
             nb = df.shape[0]
             
             #On enregistre l'average RSSI dans le tableau pour l'append dans le finalData.csv
@@ -258,9 +310,9 @@ for (i, distance) in enumerate(distances):
             averagesRSSI[file.split('_')[2].split('.')[0]] = average
             
             #On va plot (dessiner) le graph de l'évolution du RSSI selon le temps
-            plt.ylabel('RSSI')
+            plt.ylabel(antenna)
             plt.grid(True)
-            df['rssi1'].plot()
+            df[antenna].plot()
             
             #On affiche la moyenne dans le plot
             plt.axhline(y=average, color='r', linestyle='-')

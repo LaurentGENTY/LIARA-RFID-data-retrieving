@@ -62,7 +62,7 @@ Use :
         - change scale
         - ...
 
-      WARNING : If you have an error when you're trying to import pandas_datareader in `fred.py`, follow these instructions found on this StackOverflow post : https://stackoverflow.com/questions/50394873/import-pandas-datareader-gives-importerror-cannot-import-name-is-list-like
+      WARNING : If you have an error when you're trying to import `pandas_datareader` in `fred.py`, follow these instructions found on this StackOverflow post : https://stackoverflow.com/questions/50394873/import-pandas-datareader-gives-importerror-cannot-import-name-is-list-like
 
       - if you want to use Jupyter Notebook, launch Anaconda Navigator and click on Jupyter Notebook. It will open a website page where you we need this folder : `WebSocketClientCSharp\WebSocketClient\WebSocketClient\bin\Debug\generate` IPython files will be in this folder.
 
@@ -70,6 +70,12 @@ Use :
       WARNING : if you use this method, you won't be able to interact with previous graphs
 
       This step will generate all the resulted graphs we talked before in the folder : `WebSocketClientCSharp\WebSocketClient\WebSocketClient\bin\Debug\xp\data`
+
+      - You have to choose your object such as : Sel, Chaudron1, Bocal_Pates1... and if there are enough data to generate graphs and stuff (78 files of data and the directory) then you will be able to generate the data.
+
+      - Now, you have to choose the antenna you want to use to generate the resulted data. You can now enter a number between 1 and 8 (for the first version of the program, only the first 4 antennas are working) Indeed, during your data retrieving you were able to choose an antenna. But in the resulted csv files, there are all the antennas. So, if you want to use a particular antenna : for instance you want to generate all the graphs of the previous csv files for the antenna number 3, you can do it.
+
+      WARNING !!! : during your data retrieving you chose a specific antenna. Whichs means, all your data are based on your antenna choice. MAKE SURE TO CHOOSE THE SAME ANTENNA FOR YOUR DATA RETRIEVING AND YOUR GENERATION OF DIFFERENT GRAPHS : if you chose the antenna number 1 for your data retrieving, make sure you choose the antenna number 1 for your graphs.
 
       - Now you can find different resulted files, such as :
         - `WebSocketClientCSharp\WebSocketClient\WebSocketClient\bin\Debug\xp\data` :
@@ -106,4 +112,3 @@ TO REMEMBER :
   - if you want to generate graphs and stuff with the python script REMEMBER to retrieve data for every couple distance/angle otherwise
   you won't be able to generate the graphs
   - the pandas_datareader error is very important because you won't be able to to execute the python script
-  - the first version of this project only works if you select the first antenna (which means you can retrieve data only from the first antenna)
