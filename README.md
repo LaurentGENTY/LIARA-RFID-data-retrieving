@@ -1,8 +1,7 @@
 # WebSocketClientCSharp
 Data retrieving application of LIARA's sensors and data processing
 
-- Created and developped by Laurent GENTY, trainee IT specialist at the LIARA during the 2018 summer trimester
-- ALL RIGHTS RESERVED : Laurent GENTY
+- Created and developped by Laurent GENTY, trainee IT specialist at the LIARA during the 2018 summer trimester. ALL RIGHTS RESERVED : Laurent GENTY
 
   This project was realized as part of my Computing Science University Technology Degree at Bordeaux (DUT Informatique) during my last semester
   at the CRIAAC laboratory at Chicoutimi (Canada).
