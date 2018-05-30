@@ -28,7 +28,7 @@ Installations :
     * mpl_toolkits
     * progressbar2
 
-- Any IDE (but developper with Visual Studio Community 2017)
+- Any IDE (but developped with Visual Studio Community 2017)
 
 * That's all !
 
