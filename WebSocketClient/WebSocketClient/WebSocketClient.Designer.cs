@@ -469,7 +469,7 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(108, 584);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(854, 23);
+            this.progressBar.Size = new System.Drawing.Size(1009, 23);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 46;
@@ -485,9 +485,9 @@
             // 
             // clearButton
             // 
-            this.clearButton.Location = new System.Drawing.Point(968, 584);
+            this.clearButton.Location = new System.Drawing.Point(321, 179);
             this.clearButton.Name = "clearButton";
-            this.clearButton.Size = new System.Drawing.Size(149, 23);
+            this.clearButton.Size = new System.Drawing.Size(108, 23);
             this.clearButton.TabIndex = 48;
             this.clearButton.Text = "Clear All Files";
             this.clearButton.UseVisualStyleBackColor = true;

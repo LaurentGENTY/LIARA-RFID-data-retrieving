@@ -123,7 +123,7 @@ namespace WebSocketClient
 
                             //variables d'écriture du fichier
                             StringBuilder csv = new StringBuilder();
-                            string filePathBis = "xp/" + this.fileName.Text + this.formatFile.Text;
+                            string filePathBis = "xp/" + this.tagObject.Text + "/" + this.fileName.Text + this.formatFile.Text;
 
                             //liste de string que l'on va ajouter dans la row
                             //text[0] = timestamp
@@ -137,7 +137,7 @@ namespace WebSocketClient
                             //on doit donc passer par un dateTime et le reparse
                             var datetime = a[0]["TimeStamp"];
                             var result = datetime.ToObject<DateTime>();
-                            text[0] = result.ToString("yyyy-MM-dd-HHmmss.fff");
+                            text[0] = result.ToString("HH:mm:ss.fff");
 
                             Console.WriteLine(text[0]);
 
@@ -156,7 +156,7 @@ namespace WebSocketClient
                                 //seulement les row que l'antenne choisie capte
                                 if (a[i]["RFID_Antennas_ID_FK"].ToString() == this.labelIDAntenna.Text && this.filter == true)
                                 {
-                                    Console.WriteLine("CAN APPEND");
+                                    //Console.WriteLine("CAN APPEND");
                                     canAppend = true;
                                 }
                             }
@@ -180,14 +180,24 @@ namespace WebSocketClient
                                     this.Invoke((MethodInvoker)(() => progressBar.PerformStep()));
                                     
                                     n++;
+                                    ending = DateTime.Now;
+
+                                    if((ending - beginning).TotalMilliseconds >= 300000)
+                                    {
+                                        double averageTime = (ending - beginning).TotalMilliseconds / n;
+                                        MessageBox.Show("The retrieving took too much time. The session will be closed..\n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
+                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender, e)));
+
+                                    }
 
                                     //si on a les échantillons que l'on souhauite
-                                    if(n >= 100)
+                                    if (n >= 100)
                                     {
                                         this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender,e)));
-                                        ending = DateTime.Now;
 
-                                        Console.WriteLine((ending - beginning).TotalMilliseconds);
+                                        double averageTime = (ending - beginning).TotalMilliseconds / n;
+                                        MessageBox.Show("The session worked perfectly. \n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : "+ averageTime + " of milliseconds per record");
+
                                     }
 
                                     //le fichier sera donc constitué d'une liste de lignes avec les RSSI pour les antennes à des timestamp différents
@@ -213,12 +223,12 @@ namespace WebSocketClient
                 }
                 else if (this.filter == true)
                 {
-                    Console.WriteLine("Please, select filters : object, distance and angle ..");
+                    MessageBox.Show("Please, select filters : object, distance and angle ..");
                 }
             }
             else
             {
-                Console.WriteLine("Please, enter an URL ..");
+                MessageBox.Show("Please, enter an URL ..");
             }
         }
 
@@ -292,27 +302,8 @@ namespace WebSocketClient
                 text[index] = rssi;
             }
 
-            Console.WriteLine(jToken.ToString());
+            //Console.WriteLine(jToken.ToString());
         }
-
-        /*void aTimer_Tick(object sender, EventArgs e)
-        {
-            Check();
-        }
-
-        public void Check()
-        {
-            try
-            {
-                //Database checks here..
-                label1.Text = string.Format("new_text {0}", DateTime.Now.ToLongTimeString());
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            MessageBox.Show("BAAAA");
-        }*/
 
         private void disconnectButton_Click(object sender, EventArgs e)
         {
@@ -478,19 +469,20 @@ namespace WebSocketClient
 
         }
 
-        private void switchButton_Click(object sender, EventArgs e)
+        /*private void switchButton_Click(object sender, EventArgs e)
         {
             Form data = new data();
             data.Owner = this;
             data.Show();
             this.Hide();
-        }
+        }*/
 
         private void clearButton_Click(object sender, EventArgs e)
         {
-            var confirmResult = MessageBox.Show("Are you sure to delete all the data??",
+            var confirmResult = MessageBox.Show("Are you sure to delete all the data?? It will delete all the data files AND the resulted graphs",
                                      "Confirm Delete",
                                      MessageBoxButtons.YesNo);
+
             if (confirmResult == DialogResult.Yes)
             {
                 //Permet de clear tous les files de données
