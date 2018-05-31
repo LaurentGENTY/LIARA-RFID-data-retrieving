@@ -137,7 +137,7 @@ namespace WebSocketClient
                             //on doit donc passer par un dateTime et le reparse
                             var datetime = a[0]["TimeStamp"];
                             var result = datetime.ToObject<DateTime>();
-                            text[0] = result.ToString("HH:mm:ss.fff");
+                            text[0] = result.ToString("yyyy-MM-dd HH:mm:ss.fff");
 
                             Console.WriteLine(text[0]);
 

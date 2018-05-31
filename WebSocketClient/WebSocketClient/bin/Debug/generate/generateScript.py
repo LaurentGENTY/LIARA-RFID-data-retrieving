@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[6]:
+# In[10]:
 
 
 import pandas as pd
@@ -97,7 +97,7 @@ def verifyFiles() :
 #Fonction permettant de delete tous les graphs et images
 def clearAll() :
     
-    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap']
+    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap','data']
     
     for temp in folders:
     
@@ -244,7 +244,7 @@ def chooseAntenna() :
 
 #IN CASE OF UNINTENDED INTERRUPTION OF THE SCRIPT : PLEASE UNCOMMENT THE NEXT LINE WITH THE GOOD PATH
 # ---------- 'C:/path/to/add/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate' ----------
-#os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
+os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
 
 #On change le directory
 getPath()
@@ -303,6 +303,16 @@ for (i, distance) in enumerate(distances):
             average = df[antenna].mean()
             nb = df.shape[0]
             
+                        
+            #On va récupérer la moyenne de temps par échantillon
+            beginning = df.first_valid_index()
+            ending = df.last_valid_index()
+            
+            averageTime = (ending - beginning).total_seconds()/nb
+            
+            #Ecart-type
+            standardDeviation = df[antenna].std()
+            
             #On enregistre l'average RSSI dans le tableau pour l'append dans le finalData.csv
             #EXEMPLE : Sel_0_0.csv alors averageRSSI[0'°'] = moyenne courante
             #Sel_0_23.csv : averageRSSI[23] = moyenne courante
@@ -328,11 +338,11 @@ for (i, distance) in enumerate(distances):
                 with open('data/data.csv', 'a') as the_file:
                     the_file.write('Nom;Echantillons;Moyenne;EcartType;MoyenneTemps')
                     the_file.write('\n')        
-                
+
             #On écrit les infos
             #Le nom du fichier + nombre d'échantillons + la moyenne + écart type + [autres infos]
             with open('data/data.csv', 'a') as the_file:
-                the_file.write(temp+';'+str(nb)+';'+str(average)+';'+'0'+';'+'0')
+                the_file.write(temp+';'+str(nb)+';'+str(average)+';'+str(standardDeviation)+';'+str(averageTime))
                 the_file.write('\n')
                 
             #----------------------------------------------------------------------
