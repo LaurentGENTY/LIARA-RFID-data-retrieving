@@ -83,7 +83,7 @@ namespace WebSocketClient
                     connectButton.Enabled = false;
                     disconnectButton.Enabled = true;
                     serverUrl.Enabled = false;
-
+                    this.messages.Items.Clear();
                     createFolder(this.tagObject.Text);
 
                     beginning = DateTime.Now;
@@ -182,11 +182,11 @@ namespace WebSocketClient
                                     n++;
                                     ending = DateTime.Now;
 
-                                    if((ending - beginning).TotalMilliseconds >= 300000)
+                                    if((ending - beginning).TotalMilliseconds >= 180000)
                                     {
+                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender, e)));
                                         double averageTime = (ending - beginning).TotalMilliseconds / n;
                                         MessageBox.Show("The retrieving took too much time. The session will be closed..\n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
-                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender, e)));
 
                                     }
 
@@ -272,10 +272,10 @@ namespace WebSocketClient
         {
             text[0] = "";
 
-            //on met toutes les forces de signaux à -99 au début
+            //on met toutes les forces de signaux à -80 au début
             for (int i = 1; i < text.Count(); i++)
             {
-                text[i] = "-70";
+                text[i] = "-80";
             }
         }
 
