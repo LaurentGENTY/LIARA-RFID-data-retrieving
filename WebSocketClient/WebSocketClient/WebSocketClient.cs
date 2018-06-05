@@ -137,7 +137,7 @@ namespace WebSocketClient
                             //on doit donc passer par un dateTime et le reparse
                             var datetime = a[0]["TimeStamp"];
                             var result = datetime.ToObject<DateTime>();
-                            text[0] = result.ToString("yyyy-MM-dd HH:mm:ss.fff");
+                            text[0] = result.ToString("HH:mm:ss.fff");
 
                             Console.WriteLine(text[0]);
 
@@ -244,6 +244,14 @@ namespace WebSocketClient
             {
                 Console.WriteLine("The directory doesn't exist : creation of the directory");
                 Directory.CreateDirectory(path);
+                Directory.CreateDirectory(path+"\\"+"data\\");
+                Directory.CreateDirectory(path + "\\" + "data\\2d\\");
+                Directory.CreateDirectory(path + "\\" + "data\\2ddistanceangle\\");
+                Directory.CreateDirectory(path + "\\" + "data\\3d\\");
+                Directory.CreateDirectory(path + "\\" + "data\\heatmap\\");
+
+
+
             }
         }
 

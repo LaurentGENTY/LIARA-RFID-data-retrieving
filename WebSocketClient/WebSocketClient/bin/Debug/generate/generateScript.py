@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[10]:
+# In[3]:
 
 
 import pandas as pd
@@ -50,7 +50,7 @@ def finalDataExist() :
         
     #On écrit le nom des colonnes
     with open('data/finalData.csv', 'a') as the_file:
-        the_file.write('Distance;0;23;45;90;120;180')
+        the_file.write('Distance;0;23;45;90')
         the_file.write('\n')
     #else:
         
@@ -78,7 +78,7 @@ def verifyFiles() :
             numfiles = len([f for f in os.listdir(answer) if os.path.isfile(os.path.join(answer, f)) and f[0] != '.'])        
         
             #Le nombre total de fichiers csv
-            if numfiles != 78:
+            if numfiles != 52:
                 print("Not enough data ! Make sure you collected all the necessary data before you execute this script")
                 print("Please, enter the name of the directory again")
 
@@ -294,7 +294,7 @@ for (i, distance) in enumerate(distances):
             # --------------- CONSTRUCTION GRAPHE 2D RSSI / TIME -------------------------
             
             df = pd.read_csv(filePath,sep=';',index_col=0,parse_dates=True)
-
+            
             #Moyenne -------------
             #On dit que c'est un float
             df[antenna] = df.astype(float)
@@ -357,7 +357,7 @@ for (i, distance) in enumerate(distances):
     #Maintenant que notre dictionnary des moyennes pour chaque couple Distance / Angle
     
     if bool(averagesRSSI) is True:
-        final = distance + ';' + str(averagesRSSI["0"]) + ';'+ str(averagesRSSI["23"]) + ';' + str(averagesRSSI["45"]) + ';' + str(averagesRSSI["90"]) + ';' + str(averagesRSSI["120"]) + ';' + str(averagesRSSI["180"])
+        final = distance + ';' + str(averagesRSSI["0"]) + ';'+ str(averagesRSSI["23"]) + ';' + str(averagesRSSI["45"]) + ';' + str(averagesRSSI["90"])
         #print(final)
         
         with open('data/finalData.csv', 'a') as the_file:

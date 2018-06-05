@@ -18,8 +18,6 @@ namespace WebSocketClient
             this.list.Add(23);
             this.list.Add(45);
             this.list.Add(90);
-            this.list.Add(120);
-            this.list.Add(180);
 
         }
 
