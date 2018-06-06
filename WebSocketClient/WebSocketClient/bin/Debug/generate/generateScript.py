@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[9]:
 
 
 import pandas as pd
@@ -17,6 +17,8 @@ import glob, os
 import time
 import sys
 import inspect
+import fileinput
+
 
 from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA,     AdaptiveETA, FileTransferSpeed, FormatLabel, Percentage,     ProgressBar, ReverseBar, RotatingMarker, SimpleProgress, Timer
 
@@ -193,7 +195,7 @@ def generationWireFrame() :
 
 def setupBar() :
     widgets = [Bar('>'), ' ', ETA(), ' ', ReverseBar('<')]
-    pbar = ProgressBar(widgets=widgets, maxval=78).start()
+    pbar = ProgressBar(widgets=widgets, maxval=52).start()
     
     return pbar;
 
@@ -234,6 +236,15 @@ def chooseAntenna() :
             print("Antenna not found")
     
     return antenna;
+
+# Fonction permettant de vérifier que le format ne contient pas des \t à la place des ; pour les CSV
+# En effet, il s'est avéré que des fois dans certains fichiers des \t remplaçaient les ;
+
+def reformatCSV(filePath) :
+    with fileinput.FileInput(filePath, inplace=True) as file:
+        for line in file:
+            print(line.replace('\t', ";"), end='')
+    return;
 
 #------------------------------------------------------------------
 #on va générer les csv des moyennes pour chaque Angle
@@ -292,6 +303,8 @@ for (i, distance) in enumerate(distances):
             filePath = os.getcwd().replace("\\","/")+"/"+file
 
             # --------------- CONSTRUCTION GRAPHE 2D RSSI / TIME -------------------------
+            
+            reformatCSV(filePath)
             
             df = pd.read_csv(filePath,sep=';',index_col=0,parse_dates=True)
             
