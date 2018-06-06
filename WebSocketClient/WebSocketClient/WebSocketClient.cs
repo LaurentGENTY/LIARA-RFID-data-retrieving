@@ -257,6 +257,13 @@ namespace WebSocketClient
 
         private void initFile(string filePath, StringBuilder csv)
         {
+
+            if(File.Exists(filePath))
+            {
+                Console.WriteLine("The file of data already exists : it will be deleted ..");
+                File.Delete(filePath);
+            }
+
             // Set Status to Locked
             _readWriteLock.EnterWriteLock();
             try
