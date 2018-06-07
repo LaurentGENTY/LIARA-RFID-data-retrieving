@@ -247,6 +247,7 @@ namespace WebSocketClient
                 Directory.CreateDirectory(path+"\\"+"data\\");
                 Directory.CreateDirectory(path + "\\" + "data\\2d\\");
                 Directory.CreateDirectory(path + "\\" + "data\\2ddistanceangle\\");
+                Directory.CreateDirectory(path + "\\" + "data\\2dlinregress\\");
                 Directory.CreateDirectory(path + "\\" + "data\\3d\\");
                 Directory.CreateDirectory(path + "\\" + "data\\heatmap\\");
 

@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[9]:
+# In[3]:
 
 
 import pandas as pd
@@ -18,6 +18,8 @@ import time
 import sys
 import inspect
 import fileinput
+import scipy
+from scipy import stats
 
 
 from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA,     AdaptiveETA, FileTransferSpeed, FormatLabel, Percentage,     ProgressBar, ReverseBar, RotatingMarker, SimpleProgress, Timer
@@ -99,7 +101,7 @@ def verifyFiles() :
 #Fonction permettant de delete tous les graphs et images
 def clearAll() :
     
-    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap','data']
+    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap','data/2dlinregress','data']
     
     for temp in folders:
     
@@ -193,6 +195,52 @@ def generationWireFrame() :
     
     return;
 
+def generateRegress() :
+    
+    #Separé par des ; donc l'index est la première colonne
+    df = pd.read_csv('data/finalData.csv',sep=';',index_col=0)
+    
+    angles = ['0','23','45','90']
+    numpyAngles = np.array(['0','23','45','90'])
+
+    distances = [0,5,15,25,40,60,80,100,120,140,160,180,200]
+    numpyDistances = np.array([0,5,15,25,40,60,80,100,120,140,160,180,200])
+
+    y = np.array([])
+
+    colors = ['b','y','g','r']
+    i = 0
+
+    #Pour tous les angles (ie. pour toutes les courbes) on va faire une régression linéaire
+    for a in angles:
+        
+        #On va faire un tableau de toutes les valeurs RSSI
+        for d in distances :
+            
+            #On récupère le RSSI pour le couple angle/distance
+            temp = df[a].get(d)
+            
+            #On le push dans le numpy array
+            y = np.append(y,[temp])
+        
+        #Une fois qu'on a rempli tous les RSSI pour cet angle : on peut créer la régression linéaire
+        
+        slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(numpyDistances,y)
+        plt.plot(numpyDistances, intercept + slope*numpyDistances, colors[i], label=a+' °')
+        i = i+1
+        
+        #On vide le tableau des Y : dans Y on a un tableau vide
+        y = np.delete(y,[0,1,2,3,4,5,6,7,8,9,10,11,12])
+
+    #On fait la meme chose pour tous les angles qui suivent...
+    
+    #On affiche les plots
+    plt.legend()
+    plt.savefig('data/2dlinregress/2dlinregress.png')
+    plt.show()
+    
+    return;
+
 def setupBar() :
     widgets = [Bar('>'), ' ', ETA(), ' ', ReverseBar('<')]
     pbar = ProgressBar(widgets=widgets, maxval=52).start()
@@ -255,7 +303,7 @@ def reformatCSV(filePath) :
 
 #IN CASE OF UNINTENDED INTERRUPTION OF THE SCRIPT : PLEASE UNCOMMENT THE NEXT LINE WITH THE GOOD PATH
 # ---------- 'C:/path/to/add/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate' ----------
-os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
+#os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
 
 #On change le directory
 getPath()
@@ -268,7 +316,7 @@ antenna = chooseAntenna()
 clearAll()
 
 #Liste des angles permettant d'effectuer les lectures pour les algo
-distances = ['0','5','10','15','25','40','60','80','100','120','140','160','180','200']
+distances = ['0','5','15','25','40','60','80','100','120','140','160','180','200']
 
 finalDataExist()
 
@@ -384,6 +432,8 @@ for (i, distance) in enumerate(distances):
 pbar.finish()
 
 generation2DDistanceAngle()
+
+generateRegress()
     
 generationHeatMap()
 
