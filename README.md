@@ -26,17 +26,18 @@ Installations :
     * numpy
     * mpl_toolkits
     * progressbar2
+    * scipy
 
 - Any IDE (but developped with Visual Studio Community 2017)
 
 * That's all !
 
 - OPTIONNAL
-  - Anaconda Navigator -> Jupyter : thanks to this software, most of the previous libraries will be already installed. However, the use of Jupyter (compilation, coding, etc...) has few defaults such as you won't be able to manipulate interactively the generated graphs. But if libraries are not installed (suchs as progressbar2 or pandas_datareader... if I remember right) you can install them with the Anaconda Prompt by following the same commands as before
+  - Anaconda Navigator -> Jupyter : thanks to this software, most of the previous libraries will be already installed. However, the use of Jupyter (compilation, coding, etc...) has few defaults such as you won't be able to manipulate interactively the generated graphs. But if libraries are not installed (suchs as progressbar2 or pandas_datareader... if I remember right) you can install them with the Anaconda Prompt by following the same commands as before OR with the special Anaconda Prompt command : `conda install [package]`
 
 Use :
   The project is divided in 2 parts : the data's retrieve and the data's process. To organize your experiment protocol you can read (in French though)
-  the protocol is followed to retrieve my data with different distances, different angles, etc... at   https://drive.google.com/open?id=1TB08JN2wnAQReUNQhscYbAWte_s2hVMOCmmyfXoR4io
+  the protocol is followed to retrieve my data with different distances, different angles, etc... at   https://drive.google.com/open?id=1PFWO7Ai32NR40S6mu2_ZYgtYqD_iwEEh
 
   - First step : retrieve the data
     - First of all, you will need to place an object on a specific position in the laboratory : for instance at 10 cm from the first antenna. When you made a specific configuration in the laboratory you we be able to start the C# project.
@@ -86,13 +87,16 @@ Use :
 
             - format of `data.csv` : `[Name of the experiment[Object]_[distance]_[angle]];[Total of Samples];[Average];[Standard Deviation]`
           - `finalData.csv` : the final csv file which contains every average of RSSI values for every couple distance/angle. With this file the python script will generate the heatmap and the wireframe
-          - format of finalData.csv : double entry table : `Distance;0[°];23[°];45[°];90[°];120[°];180[°]`
+          - format of finalData.csv : double entry table : `Distance;0[°];23[°];45[°];90[°]`
         - 2d/ :
           - every 2D graphs (as PNG) which shows us the divition between every samples during the experiment AND the average and the experiment for every couple distance/angle
             - format of PNG files : `[Object]_[distance]_[angle].png`
         - 2ddistanceangle/ :
           - the recap between every curves for each couple distance/angle
-            - format of `output.png` : 6 curves (one for each angle previously quoted) ; `XAxis : distance / YAxis : RSSI Value`
+            - format of `output.png` : 4 curves (one for each angle previously quoted) ; `XAxis : distance / YAxis : RSSI Value`
+        - 2dlinregress/ :
+              - the linear regression for all the previous results. Indeed, to get data more pertinent we need to apply some maths on them !
+                - format of `2dlinregress.png` : 4 curves (one for each angle previously quoted) ; `XAxis : distance / YAxis : RSSI Value`
         - 3d/ :
           - the recap in 3D (as a WireFrame graph) of all average of the couple distance/angle
             - format of `3d.png` : 78 dots in 3d for every couple distance/angle ; `XAxis : Angle / YAxis : Distance / ZAxis : RSSI Value`
