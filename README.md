@@ -108,6 +108,9 @@ Use :
     And that's all ! At the end of your run : your data will look like this :
     ![alt text](https://github.com/LaurentGENTY/WebSocketClientCSharp/blob/master/media/dataImageTest.png)
 
+    with all the 2d graphs associated :
+    ![alt text](https://github.com/LaurentGENTY/WebSocketClientCSharp/blob/master/media/allGraphsTest.png)
+
     And all the resulted graphs should look like this more or less :
     ![alt text](https://github.com/LaurentGENTY/WebSocketClientCSharp/blob/master/media/imagesTest.png)
 
