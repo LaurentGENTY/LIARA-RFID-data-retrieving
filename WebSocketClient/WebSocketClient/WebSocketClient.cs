@@ -190,8 +190,22 @@ namespace WebSocketClient
                                     
                                     //On augmente le nombre d'échantillons prélevés
                                     n++;
-
                                     this.Invoke((MethodInvoker)(() => this.samples.Text = n.ToString()));
+
+                                    //si on a les échantillons que l'on souhauite
+                                    if (n >= int.Parse(this.samplesLimit.Text))
+                                    {
+                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender, e)));
+                                        
+                                        //On arrête le chrono
+                                        t.Stop();
+
+                                        double averageTime = (ending - beginning).TotalMilliseconds / n;
+                                        MessageBox.Show("The session worked perfectly. \n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
+                                        
+
+                                    }
+
                                     
                                     //le fichier sera donc constitué d'une liste de lignes avec les RSSI pour les antennes à des timestamp différents
                                 }

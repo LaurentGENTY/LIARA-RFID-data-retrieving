@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[2]:
 
 
 import pandas as pd
@@ -356,23 +356,22 @@ for (i, distance) in enumerate(distances):
             
             df = pd.read_csv(filePath,sep=';',index_col=0,parse_dates=True)
             
-            #Moyenne -------------
+            #Moyenne
             #On dit que c'est un float
             df[antenna] = df.astype(float)
-
-            #On fait la moyenne de la première colonne
             average = df[antenna].mean()
             nb = df.shape[0]
             
-                        
+            #Ecart-type
+            standardDeviation = df[antenna].std()
+            
             #On va récupérer la moyenne de temps par échantillon
             beginning = df.first_valid_index()
             ending = df.last_valid_index()
-            
             averageTime = (ending - beginning).total_seconds()/nb
             
-            #Ecart-type
-            standardDeviation = df[antenna].std()
+            #Temps total
+            totalTime = (ending - beginning).total_seconds()
             
             #On enregistre l'average RSSI dans le tableau pour l'append dans le finalData.csv
             #EXEMPLE : Sel_0_0.csv alors averageRSSI[0'°'] = moyenne courante
@@ -397,13 +396,13 @@ for (i, distance) in enumerate(distances):
                 
                 #On écrit le nom des colonnes
                 with open('data/data.csv', 'a') as the_file:
-                    the_file.write('Nom;Echantillons;Moyenne;EcartType;MoyenneTemps')
+                    the_file.write('Nom;Echantillons;Moyenne;EcartType;TempsTotal;MoyenneTemps')
                     the_file.write('\n')        
 
             #On écrit les infos
             #Le nom du fichier + nombre d'échantillons + la moyenne + écart type + [autres infos]
             with open('data/data.csv', 'a') as the_file:
-                the_file.write(temp+';'+str(nb)+';'+str(average)+';'+str(standardDeviation)+';'+str(averageTime))
+                the_file.write(temp+';'+str(nb)+';'+str(average)+';'+str(standardDeviation)+';'+str(totalTime)+';'+str(averageTime))
                 the_file.write('\n')
                 
             #----------------------------------------------------------------------

@@ -43,7 +43,7 @@ namespace WebSocketClient
                     sec = 0;
                     min++;
                 }
-            } while (totalSec < form.getTimeLimit()+1 && !stop);
+            } while (!stop);
 
             //Si le thread s'est terminé car on a atteint la limite de temps total à savoir 5 min alors envoie la dialogue box sinon non
             if(!stop)

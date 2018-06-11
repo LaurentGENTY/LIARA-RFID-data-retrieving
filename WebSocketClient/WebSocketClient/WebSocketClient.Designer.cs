@@ -80,6 +80,8 @@
             this.timeLimit = new System.Windows.Forms.TextBox();
             this.label25 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
+            this.label27 = new System.Windows.Forms.Label();
+            this.samplesLimit = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // messages
@@ -476,7 +478,7 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(108, 584);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(532, 23);
+            this.progressBar.Size = new System.Drawing.Size(390, 23);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 46;
@@ -536,16 +538,16 @@
             // 
             // timeLimit
             // 
-            this.timeLimit.Location = new System.Drawing.Point(727, 583);
+            this.timeLimit.Location = new System.Drawing.Point(730, 584);
             this.timeLimit.Name = "timeLimit";
             this.timeLimit.Size = new System.Drawing.Size(32, 22);
             this.timeLimit.TabIndex = 54;
-            this.timeLimit.Text = "10";
+            this.timeLimit.Text = "300";
             // 
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(646, 586);
+            this.label25.Location = new System.Drawing.Point(655, 587);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(75, 17);
             this.label25.TabIndex = 53;
@@ -560,11 +562,31 @@
             this.label26.TabIndex = 55;
             this.label26.Text = "seconds";
             // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(506, 587);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(98, 17);
+            this.label27.TabIndex = 56;
+            this.label27.Text = "Samples limit :";
+            // 
+            // samplesLimit
+            // 
+            this.samplesLimit.Enabled = false;
+            this.samplesLimit.Location = new System.Drawing.Point(610, 585);
+            this.samplesLimit.Name = "samplesLimit";
+            this.samplesLimit.Size = new System.Drawing.Size(32, 22);
+            this.samplesLimit.TabIndex = 57;
+            this.samplesLimit.Text = "100";
+            // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 621);
+            this.Controls.Add(this.samplesLimit);
+            this.Controls.Add(this.label27);
             this.Controls.Add(this.label26);
             this.Controls.Add(this.timeLimit);
             this.Controls.Add(this.label25);
@@ -679,6 +701,8 @@
         private System.Windows.Forms.TextBox timeLimit;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TextBox samplesLimit;
     }
 }
 
