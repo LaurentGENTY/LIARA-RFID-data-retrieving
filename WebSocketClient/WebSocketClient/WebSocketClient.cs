@@ -163,7 +163,7 @@ namespace WebSocketClient
                                 //On va verifier que l'antenne que l'on a selectionné recoit bien un signal : en effet si l'on fait des tests
                                 //sur l'antenne 1 et que l'objet est assez loin pour ne pas le capter mais que les autres antennes le captent, on veut
                                 //seulement les row que l'antenne choisie capte
-                                if (a[i]["RFID_Antennas_ID_FK"].ToString() == this.labelIDAntenna.Text && this.filter == true)
+                                if (a[i]["RFID_Antennas_ID_FK"].ToString() == this.labelIDAntenna.Text && a[i]["RFIDTagNames_ID_FK"].ToString() == this.labelIDObject.Text && this.filter == true)
                                 {
                                     //Console.WriteLine("CAN APPEND");
                                     canAppend = true;
