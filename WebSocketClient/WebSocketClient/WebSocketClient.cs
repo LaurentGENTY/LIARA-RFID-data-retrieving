@@ -202,10 +202,7 @@ namespace WebSocketClient
 
                                         double averageTime = (ending - beginning).TotalMilliseconds / n;
                                         MessageBox.Show("The session worked perfectly. \n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
-                                        
-
                                     }
-
                                     
                                     //le fichier sera donc constitué d'une liste de lignes avec les RSSI pour les antennes à des timestamp différents
                                 }

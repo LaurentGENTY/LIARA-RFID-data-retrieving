@@ -14,6 +14,8 @@ namespace WebSocketClient
         public WebSocketClient form;
         public int sec { get; set; }
         public int min { get; set; }
+        public int heu { get; set; }
+
         public int totalSec { get; set; }
 
         public TW(WebSocketClient form)
@@ -26,13 +28,14 @@ namespace WebSocketClient
         {
             sec = 0;
             min = 0;
+            heu = 0;
             stop = false;
             totalSec = sec;
             string final;
 
             do
             {
-                final = min + " min " + sec + " sec";
+                final = heu + " hours " + min + " min " + sec + " sec";
 
                 form.updateTime(final);
                 Thread.Sleep(1000);
@@ -43,6 +46,12 @@ namespace WebSocketClient
                     sec = 0;
                     min++;
                 }
+                if(min == 60)
+                {
+                    min = 0;
+                    heu++;
+                }
+
             } while (!stop);
 
             //Si le thread s'est terminé car on a atteint la limite de temps total à savoir 5 min alors envoie la dialogue box sinon non

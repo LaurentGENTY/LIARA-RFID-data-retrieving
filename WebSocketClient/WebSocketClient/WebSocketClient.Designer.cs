@@ -522,7 +522,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(975, 586);
+            this.label24.Location = new System.Drawing.Point(993, 586);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(70, 17);
             this.label24.TabIndex = 51;
@@ -531,7 +531,7 @@
             // samples
             // 
             this.samples.AutoSize = true;
-            this.samples.Location = new System.Drawing.Point(1045, 586);
+            this.samples.Location = new System.Drawing.Point(1064, 587);
             this.samples.Name = "samples";
             this.samples.Size = new System.Drawing.Size(0, 17);
             this.samples.TabIndex = 52;
