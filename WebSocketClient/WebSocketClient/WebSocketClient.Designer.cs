@@ -73,6 +73,13 @@
             this.progressBar = new System.Windows.Forms.ProgressBar();
             this.label22 = new System.Windows.Forms.Label();
             this.clearButton = new System.Windows.Forms.Button();
+            this.label23 = new System.Windows.Forms.Label();
+            this.time = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.samples = new System.Windows.Forms.Label();
+            this.timeLimit = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // messages
@@ -469,7 +476,7 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(108, 584);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(1009, 23);
+            this.progressBar.Size = new System.Drawing.Size(532, 23);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 46;
@@ -493,11 +500,78 @@
             this.clearButton.UseVisualStyleBackColor = true;
             this.clearButton.Click += new System.EventHandler(this.clearButton_Click);
             // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(830, 586);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(47, 17);
+            this.label23.TabIndex = 49;
+            this.label23.Text = "Time :";
+            // 
+            // time
+            // 
+            this.time.AutoSize = true;
+            this.time.Location = new System.Drawing.Point(880, 587);
+            this.time.Name = "time";
+            this.time.Size = new System.Drawing.Size(0, 17);
+            this.time.TabIndex = 50;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(975, 586);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(70, 17);
+            this.label24.TabIndex = 51;
+            this.label24.Text = "Samples :";
+            // 
+            // samples
+            // 
+            this.samples.AutoSize = true;
+            this.samples.Location = new System.Drawing.Point(1045, 586);
+            this.samples.Name = "samples";
+            this.samples.Size = new System.Drawing.Size(0, 17);
+            this.samples.TabIndex = 52;
+            // 
+            // timeLimit
+            // 
+            this.timeLimit.Location = new System.Drawing.Point(727, 583);
+            this.timeLimit.Name = "timeLimit";
+            this.timeLimit.Size = new System.Drawing.Size(32, 22);
+            this.timeLimit.TabIndex = 54;
+            this.timeLimit.Text = "10";
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(646, 586);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(75, 17);
+            this.label25.TabIndex = 53;
+            this.label25.Text = "Time limit :";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(765, 586);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(61, 17);
+            this.label26.TabIndex = 55;
+            this.label26.Text = "seconds";
+            // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 621);
+            this.Controls.Add(this.label26);
+            this.Controls.Add(this.timeLimit);
+            this.Controls.Add(this.label25);
+            this.Controls.Add(this.samples);
+            this.Controls.Add(this.label24);
+            this.Controls.Add(this.time);
+            this.Controls.Add(this.label23);
             this.Controls.Add(this.clearButton);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.progressBar);
@@ -598,6 +672,13 @@
         private System.Windows.Forms.ProgressBar progressBar;
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.Button clearButton;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label time;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label samples;
+        private System.Windows.Forms.TextBox timeLimit;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label26;
     }
 }
 

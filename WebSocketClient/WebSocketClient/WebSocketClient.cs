@@ -27,6 +27,12 @@ namespace WebSocketClient
 
         private bool filter;
 
+        //Variables pour les échantillons
+        int n;
+
+        //Chronomètre
+        private TW t;
+
         private DateTime beginning;
         private DateTime ending;
 
@@ -86,12 +92,15 @@ namespace WebSocketClient
                     this.messages.Items.Clear();
                     createFolder(this.tagObject.Text);
 
+                    t = new TW(this);
+                    t.Run();
+
                     beginning = DateTime.Now;
 
                     this.Invoke((MethodInvoker)(() => progressBar.Value = 0));
 
                     //correspond au nombre d'échantillons ajoutés dans les lignes : on en veut 100 au maximum
-                    int n = 0;
+                    n = 0;
 
                     //init les premières lignes du CSV : colonnes SI LE FICHIER NEXISTE PAS
                     //faire une fonction qui vérifie les filtres ; verifie l'existence du fichier ; si oui delete TOUT sauf les colonnes
@@ -179,27 +188,11 @@ namespace WebSocketClient
                                     this.Invoke((MethodInvoker)(() => File.AppendAllText(filePathBis, csv.ToString())));
                                     this.Invoke((MethodInvoker)(() => progressBar.PerformStep()));
                                     
+                                    //On augmente le nombre d'échantillons prélevés
                                     n++;
-                                    ending = DateTime.Now;
 
-                                    if((ending - beginning).TotalMilliseconds >= 180000)
-                                    {
-                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender, e)));
-                                        double averageTime = (ending - beginning).TotalMilliseconds / n;
-                                        MessageBox.Show("The retrieving took too much time. The session will be closed..\n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
-
-                                    }
-
-                                    //si on a les échantillons que l'on souhauite
-                                    if (n >= 100)
-                                    {
-                                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender,e)));
-
-                                        double averageTime = (ending - beginning).TotalMilliseconds / n;
-                                        MessageBox.Show("The session worked perfectly. \n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : "+ averageTime + " of milliseconds per record");
-
-                                    }
-
+                                    this.Invoke((MethodInvoker)(() => this.samples.Text = n.ToString()));
+                                    
                                     //le fichier sera donc constitué d'une liste de lignes avec les RSSI pour les antennes à des timestamp différents
                                 }
                             }
@@ -250,9 +243,6 @@ namespace WebSocketClient
                 Directory.CreateDirectory(path + "\\" + "data\\2dlinregress\\");
                 Directory.CreateDirectory(path + "\\" + "data\\3d\\");
                 Directory.CreateDirectory(path + "\\" + "data\\heatmap\\");
-
-
-
             }
         }
 
@@ -321,12 +311,34 @@ namespace WebSocketClient
             //Console.WriteLine(jToken.ToString());
         }
 
-        private void disconnectButton_Click(object sender, EventArgs e)
+        public void disconnectButton_Click(object sender, EventArgs e)
         {
+            //On arrête le chrono
+            t.Stop();
+
             disconnectButton.Enabled = false;
             connectButton.Enabled = true;
             serverUrl.Enabled = true;
             client.CloseAsync();
+        }
+
+        public void end()
+        {
+            //On arrête le chrono
+            t.Stop();
+
+            this.Invoke((MethodInvoker)(() => disconnectButton.Enabled = false));
+            this.Invoke((MethodInvoker)(() => connectButton.Enabled = true));
+            this.Invoke((MethodInvoker)(() => serverUrl.Enabled = true));
+            this.Invoke((MethodInvoker)(() => client.CloseAsync()));
+
+            ending = DateTime.Now;
+            double averageTime = (ending - beginning).TotalMilliseconds / n;
+
+            MessageBox.Show("The session is ended. The session will be closed..\n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
+
+
+
         }
 
         private void listAntennas_SelectedIndexChanged(object sender, EventArgs e)
@@ -438,6 +450,13 @@ namespace WebSocketClient
             }
         }
 
+        public int getTimeLimit()
+        {
+            int a = int.Parse(this.timeLimit.Text);
+
+            return a;
+        }
+
         #region POUBELLE FAIL
         // POUBELLE FAILS
         private void serverUrl_TextChanged(object sender, EventArgs e)
@@ -485,13 +504,10 @@ namespace WebSocketClient
 
         }
 
-        /*private void switchButton_Click(object sender, EventArgs e)
+        public void updateTime(string time)
         {
-            Form data = new data();
-            data.Owner = this;
-            data.Show();
-            this.Hide();
-        }*/
+            this.Invoke((MethodInvoker)(() => this.time.Text = time));
+        }
 
         private void clearButton_Click(object sender, EventArgs e)
         {

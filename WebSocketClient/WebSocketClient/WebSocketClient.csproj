@@ -61,6 +61,7 @@
     </Compile>
     <Compile Include="Distances.cs" />
     <Compile Include="Tags.cs" />
+    <Compile Include="Timewatch.cs" />
     <Compile Include="WebSocketClient.cs">
       <SubType>Form</SubType>
     </Compile>
