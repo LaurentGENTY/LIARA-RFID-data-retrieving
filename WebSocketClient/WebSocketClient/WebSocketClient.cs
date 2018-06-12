@@ -153,19 +153,14 @@ namespace WebSocketClient
                             //pour toutes les cases du Json Array
                             for (int i = 0; i < a.Count; i++)
                             {
-                                //si l'objet est sélectionné et qu'il est dans une row d'un enregistrement ie. s'il est présent et qu'on veut le capter
-                                //EXEMPLE : si on a le sel et le poivre : si je clique sur Sel alors je n'aurais que les parties de JArray qui sont pour le sel
-                                if (a[i]["RFIDTagNames_ID_FK"].ToString() == this.labelIDObject.Text && this.filter == true)
-                                {
-                                    fillText(a[i],text);
-                                }
-
+                   
                                 //On va verifier que l'antenne que l'on a selectionné recoit bien un signal : en effet si l'on fait des tests
                                 //sur l'antenne 1 et que l'objet est assez loin pour ne pas le capter mais que les autres antennes le captent, on veut
                                 //seulement les row que l'antenne choisie capte
                                 if (a[i]["RFID_Antennas_ID_FK"].ToString() == this.labelIDAntenna.Text && a[i]["RFIDTagNames_ID_FK"].ToString() == this.labelIDObject.Text && this.filter == true)
                                 {
                                     //Console.WriteLine("CAN APPEND");
+                                    fillText(a[i], text);
                                     canAppend = true;
                                 }
                             }
