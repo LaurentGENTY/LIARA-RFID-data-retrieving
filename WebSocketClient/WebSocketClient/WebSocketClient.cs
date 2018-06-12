@@ -169,6 +169,8 @@ namespace WebSocketClient
                             //ANTENNE A DETECTE
                             if (canAppend)
                             {
+                                Console.WriteLine(a.ToString());
+
                                 this.Invoke((MethodInvoker)(() => messages.Items.Add(a.ToString())));
 
                                 if (this.fileName.Text != null && this.fileName.Text != "")
