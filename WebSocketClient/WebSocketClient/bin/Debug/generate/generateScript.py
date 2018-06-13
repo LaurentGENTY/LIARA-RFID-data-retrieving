@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[12]:
 
 
 import pandas as pd
@@ -20,7 +20,7 @@ import inspect
 import fileinput
 import scipy
 from scipy import stats
-
+import math
 
 from progressbar import AnimatedMarker, Bar, BouncingBar, Counter, ETA,     AdaptiveETA, FileTransferSpeed, FormatLabel, Percentage,     ProgressBar, ReverseBar, RotatingMarker, SimpleProgress, Timer
 
@@ -199,7 +199,7 @@ def generateRegress() :
     
     #Separé par des ; donc l'index est la première colonne
     df = pd.read_csv('data/finalData.csv',sep=';',index_col=0)
-    
+
     angles = ['0','23','45','90']
     numpyAngles = np.array(['0','23','45','90'])
 
@@ -214,24 +214,33 @@ def generateRegress() :
     #Pour tous les angles (ie. pour toutes les courbes) on va faire une régression linéaire
     for a in angles:
         
+        index = 0
+        tabDelete = []
         #On va faire un tableau de toutes les valeurs RSSI
         for d in distances :
             
             #On récupère le RSSI pour le couple angle/distance
             temp = df[a].get(d)
+    
+            #Sinon cela veut dire que pour la distance / angle on a pas de données donc on ignore le temp et on supprime le X correspondant
+            if str(temp) == 'nan':
+                tabDelete.append(index)
+            else:
+                #On le push dans le numpy array
+                y = np.append(y,[temp])
+                
+            index = index + 1
             
-            #On le push dans le numpy array
-            y = np.append(y,[temp])
-        
-        #Une fois qu'on a rempli tous les RSSI pour cet angle : on peut créer la régression linéaire
-        
+        numpyDistances = np.delete(numpyDistances,tabDelete)
+            
         slope, intercept, r_value, p_value, std_err = scipy.stats.linregress(numpyDistances,y)
         plt.plot(numpyDistances, intercept + slope*numpyDistances, colors[i], label=a+' °')
         i = i+1
         
         #On vide le tableau des Y : dans Y on a un tableau vide
-        y = np.delete(y,[0,1,2,3,4,5,6,7,8,9,10,11,12])
-
+        y = np.array([])
+        numpyDistances = np.array([0,5,15,25,40,60,80,100,120,140,160,180,200])
+        
     #On fait la meme chose pour tous les angles qui suivent...
     
     #On affiche les plots
@@ -356,40 +365,54 @@ for (i, distance) in enumerate(distances):
             
             df = pd.read_csv(filePath,sep=';',index_col=0,parse_dates=True)
             
-            #Moyenne
-            #On dit que c'est un float
-            df[antenna] = df.astype(float)
-            average = df[antenna].mean()
-            nb = df.shape[0]
+            #Si le fichier n'est pas vide de données
+            if df.empty is False :
+                #Moyenne
+                #On dit que c'est un float
+                df[antenna] = df.astype(float)
+                average = df[antenna].mean()
+                nb = df.shape[0]
             
-            #Ecart-type
-            standardDeviation = df[antenna].std()
+                #Ecart-type
+                standardDeviation = df[antenna].std()
             
-            #On va récupérer la moyenne de temps par échantillon
-            beginning = df.first_valid_index()
-            ending = df.last_valid_index()
-            averageTime = (ending - beginning).total_seconds()/nb
+                #On va récupérer la moyenne de temps par échantillon
+                beginning = df.first_valid_index()
+                ending = df.last_valid_index()
+                averageTime = (ending - beginning).total_seconds()/nb
             
-            #Temps total
-            totalTime = (ending - beginning).total_seconds()
+                #Temps total
+                totalTime = (ending - beginning).total_seconds()
             
-            #On enregistre l'average RSSI dans le tableau pour l'append dans le finalData.csv
-            #EXEMPLE : Sel_0_0.csv alors averageRSSI[0'°'] = moyenne courante
-            #Sel_0_23.csv : averageRSSI[23] = moyenne courante
-            #...
-            averagesRSSI[file.split('_')[2].split('.')[0]] = average
+                #On enregistre l'average RSSI dans le tableau pour l'append dans le finalData.csv
+                #EXEMPLE : Sel_0_0.csv alors averageRSSI[0'°'] = moyenne courante
+                #Sel_0_23.csv : averageRSSI[23] = moyenne courante
+                #...
+                averagesRSSI[file.split('_')[2].split('.')[0]] = average
             
-            #On va plot (dessiner) le graph de l'évolution du RSSI selon le temps
-            plt.ylabel(antenna)
-            plt.grid(True)
-            df[antenna].plot()
+                #On va plot (dessiner) le graph de l'évolution du RSSI selon le temps
+                plt.ylabel(antenna)
+                plt.grid(True)
+                df[antenna].plot()
             
-            #On affiche la moyenne dans le plot
-            plt.axhline(y=average, color='r', linestyle='-')
+                #On affiche la moyenne dans le plot
+                plt.axhline(y=average, color='r', linestyle='-')
             
-            temp = file.split('.')[0]
-            plt.savefig('data/2d/'+temp+'.png')
-            plt.close()
+                temp = file.split('.')[0]
+                plt.savefig('data/2d/'+temp+'.png')
+                plt.close()
+            
+            #Si le fichier ne contient pas de données et est donc empty
+            else:
+                temp = file.split('.')[0]
+                average = np.nan
+                nb = np.nan
+                standardDeviation = np.nan
+                totalTime = np.nan
+                averageTime = np.nan
+            
+                averagesRSSI[file.split('_')[2].split('.')[0]] = np.nan
+                
             #Si le fichier n'existe pas on le crée
             if os.path.isfile('data/data.csv') is False:
                 open('data/data.csv', 'a').close()
