@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[12]:
+# In[2]:
 
 
 import pandas as pd
@@ -137,6 +137,7 @@ def generationHeatMap() :
     plt.contourf(X,Y,Z,cmap='jet')
 
     plt.colorbar()
+    plt.title('RSSI/angle/distance heatmap')
     plt.savefig('data/heatmap/{}.png'.format('heatmap'))
 
     plt.show()
@@ -155,6 +156,7 @@ def generation2DDistanceAngle() :
     df=df.astype(float)
     
     fig = df.plot().get_figure()
+    plt.title('RSSI/angle for each angle')
     fig.savefig("data/2ddistanceangle/output.png")
     plt.show()
     plt.close(fig)
@@ -190,6 +192,7 @@ def generationWireFrame() :
     ax.set_ylabel('distance')
 
     #On la'ffiche et on l'enregistre
+    plt.title('RSSI/angle/distance in wireframe')
     plt.savefig('data/3d/3d.png')
     plt.show()
     
@@ -208,6 +211,7 @@ def generateRegress() :
 
     y = np.array([])
 
+    #Gestion des couleurs des courbes
     colors = ['b','y','g','r']
     i = 0
 
@@ -244,6 +248,7 @@ def generateRegress() :
     #On fait la meme chose pour tous les angles qui suivent...
     
     #On affiche les plots
+    plt.title('Linear regression for each curves')
     plt.legend()
     plt.savefig('data/2dlinregress/2dlinregress.png')
     plt.show()
