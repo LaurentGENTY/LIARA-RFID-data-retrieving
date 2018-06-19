@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[8]:
+# In[2]:
 
 
 import pandas as pd
@@ -189,7 +189,7 @@ def testFullFunction(functions) :
         distancesPlot = []
         deltas = []
         
-    plt.title('Deltas\' evolution')
+    plt.title('Deltas\' variation')
     plt.legend()
     plt.savefig('data/deltas/deltas.png')
     plt.show()

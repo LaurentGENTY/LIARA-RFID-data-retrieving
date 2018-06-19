@@ -156,7 +156,7 @@ def generation2DDistanceAngle() :
     df=df.astype(float)
     
     fig = df.plot().get_figure()
-    plt.title('RSSI/angle for each angle')
+    plt.title('RSSI/distance for each angle')
     fig.savefig("data/2ddistanceangle/output.png")
     plt.show()
     plt.close(fig)
@@ -384,7 +384,7 @@ for (i, distance) in enumerate(distances):
                 #On va récupérer la moyenne de temps par échantillon
                 beginning = df.first_valid_index()
                 ending = df.last_valid_index()
-                averageTime = (ending - beginning).total_seconds()/nb
+                averageTime = (ending - beginning).total_seconds()/nb/4
             
                 #Temps total
                 totalTime = (ending - beginning).total_seconds()
