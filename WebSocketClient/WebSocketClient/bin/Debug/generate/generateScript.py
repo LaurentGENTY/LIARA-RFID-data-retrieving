@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[2]:
+# In[12]:
 
 
 import pandas as pd
@@ -317,7 +317,7 @@ def reformatCSV(filePath) :
 
 #IN CASE OF UNINTENDED INTERRUPTION OF THE SCRIPT : PLEASE UNCOMMENT THE NEXT LINE WITH THE GOOD PATH
 # ---------- 'C:/path/to/add/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate' ----------
-#os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
+os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
 
 #On change le directory
 getPath()
@@ -382,8 +382,8 @@ for (i, distance) in enumerate(distances):
                 standardDeviation = df[antenna].std()
             
                 #On va récupérer la moyenne de temps par échantillon
-                beginning = df.first_valid_index()
-                ending = df.last_valid_index()
+                beginning = df.index[0]
+                ending = df.index[99]
                 averageTime = (ending - beginning).total_seconds()/nb/4
             
                 #Temps total
@@ -438,6 +438,7 @@ for (i, distance) in enumerate(distances):
             #Update de la bar
             pbar.update(ite)
             ite = ite + 1
+        
                 
         del parts
     
