@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[12]:
+# In[2]:
 
 
 import pandas as pd
@@ -64,7 +64,7 @@ def finalDataExist() :
 def verifyFiles() :
     
     ok = False
-    print("Which object do you want to use to generate data ?\n")
+    print("\nWhich object do you want to use to generate data ?")
     
     while(ok is False):
         
@@ -165,15 +165,15 @@ def generation2DDistanceAngle() :
 
 def generationWireFrame() :
     
-    raw_data = np.loadtxt('data/finalData.csv', delimiter=';', dtype=np.string_)
+    df= pd.read_csv('data/finalData.csv', sep=';')
+    df.index = df.Distance
+    del df['Distance']
+    raw_data = df
+    
+    angle    = raw_data.columns.values.astype(float)
+    distance = raw_data.index.values.astype(float)
 
-    angle    = raw_data[0 , 1:].astype(float)
-    distance = raw_data[1:, 0 ].astype(float)
-    data     = raw_data[1:, 1:].astype(float)
-
-
-    #Données à l'intérieur de la matrice
-    data = (50 + angle[np.newaxis,:]) / (10 + np.sqrt(distance[:,np.newaxis])) 
+    data = raw_data.values
 
     #Setup du plot
     fig = plt.figure()
@@ -265,7 +265,7 @@ def chooseAntenna() :
     
     #Fonction qui permet de choisir de générer les données pour une antenne
     ok = False
-    print("Which antenna do you want to choose to extract the data ?\n")
+    print("\nWhich antenna do you want to choose to extract the data ?")
     
     antennas = [1,2,3,4,5,6,7,8]
     
@@ -317,7 +317,7 @@ def reformatCSV(filePath) :
 
 #IN CASE OF UNINTENDED INTERRUPTION OF THE SCRIPT : PLEASE UNCOMMENT THE NEXT LINE WITH THE GOOD PATH
 # ---------- 'C:/path/to/add/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate' ----------
-os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
+#os.chdir('C:/Users/laure/WebSocketClientCSharp/WebSocketClient/WebSocketClient/bin/Debug/generate')
 
 #On change le directory
 getPath()
@@ -337,7 +337,7 @@ finalDataExist()
 #On est dans le folder de l'objet courant
 
 #On va setup la progressBar
-
+    
 pbar = setupBar()
 ite = 1
 
