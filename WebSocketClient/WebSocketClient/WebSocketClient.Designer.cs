@@ -62,7 +62,6 @@
             this.listAngles = new System.Windows.Forms.ListBox();
             this.label19 = new System.Windows.Forms.Label();
             this.listDistances = new System.Windows.Forms.ListBox();
-            this.fileName = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
             this.currentAngle = new System.Windows.Forms.Label();
@@ -82,6 +81,7 @@
             this.label26 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.samplesLimit = new System.Windows.Forms.TextBox();
+            this.fileName = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // messages
@@ -134,6 +134,7 @@
             // 
             // tagAntenna
             // 
+            this.tagAntenna.Enabled = false;
             this.tagAntenna.Location = new System.Drawing.Point(117, 87);
             this.tagAntenna.Name = "tagAntenna";
             this.tagAntenna.Size = new System.Drawing.Size(152, 22);
@@ -151,6 +152,7 @@
             // 
             // tagObject
             // 
+            this.tagObject.Enabled = false;
             this.tagObject.Location = new System.Drawing.Point(98, 142);
             this.tagObject.Name = "tagObject";
             this.tagObject.Size = new System.Drawing.Size(171, 22);
@@ -400,15 +402,6 @@
             this.listDistances.TabIndex = 37;
             this.listDistances.SelectedIndexChanged += new System.EventHandler(this.listDistances_SelectedIndexChanged);
             // 
-            // fileName
-            // 
-            this.fileName.AutoSize = true;
-            this.fileName.Location = new System.Drawing.Point(504, 35);
-            this.fileName.Name = "fileName";
-            this.fileName.Size = new System.Drawing.Size(138, 17);
-            this.fileName.TabIndex = 38;
-            this.fileName.Text = "**************************";
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
@@ -478,7 +471,7 @@
             // 
             this.progressBar.Location = new System.Drawing.Point(108, 584);
             this.progressBar.Name = "progressBar";
-            this.progressBar.Size = new System.Drawing.Size(390, 23);
+            this.progressBar.Size = new System.Drawing.Size(348, 23);
             this.progressBar.Step = 1;
             this.progressBar.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.progressBar.TabIndex = 46;
@@ -505,7 +498,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(830, 586);
+            this.label23.Location = new System.Drawing.Point(807, 586);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(47, 17);
             this.label23.TabIndex = 49;
@@ -514,7 +507,7 @@
             // time
             // 
             this.time.AutoSize = true;
-            this.time.Location = new System.Drawing.Point(880, 587);
+            this.time.Location = new System.Drawing.Point(857, 587);
             this.time.Name = "time";
             this.time.Size = new System.Drawing.Size(0, 17);
             this.time.TabIndex = 50;
@@ -538,7 +531,7 @@
             // 
             // timeLimit
             // 
-            this.timeLimit.Location = new System.Drawing.Point(730, 584);
+            this.timeLimit.Location = new System.Drawing.Point(697, 584);
             this.timeLimit.Name = "timeLimit";
             this.timeLimit.Size = new System.Drawing.Size(32, 22);
             this.timeLimit.TabIndex = 54;
@@ -547,7 +540,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(655, 587);
+            this.label25.Location = new System.Drawing.Point(616, 587);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(75, 17);
             this.label25.TabIndex = 53;
@@ -556,7 +549,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(765, 586);
+            this.label26.Location = new System.Drawing.Point(739, 586);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(61, 17);
             this.label26.TabIndex = 55;
@@ -565,7 +558,7 @@
             // label27
             // 
             this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(506, 587);
+            this.label27.Location = new System.Drawing.Point(469, 587);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(98, 17);
             this.label27.TabIndex = 56;
@@ -574,17 +567,26 @@
             // samplesLimit
             // 
             this.samplesLimit.Enabled = false;
-            this.samplesLimit.Location = new System.Drawing.Point(610, 585);
+            this.samplesLimit.Location = new System.Drawing.Point(571, 585);
             this.samplesLimit.Name = "samplesLimit";
             this.samplesLimit.Size = new System.Drawing.Size(32, 22);
             this.samplesLimit.TabIndex = 57;
             this.samplesLimit.Text = "100";
+            // 
+            // fileName
+            // 
+            this.fileName.Enabled = false;
+            this.fileName.Location = new System.Drawing.Point(495, 31);
+            this.fileName.Name = "fileName";
+            this.fileName.Size = new System.Drawing.Size(153, 22);
+            this.fileName.TabIndex = 58;
             // 
             // WebSocketClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1133, 621);
+            this.Controls.Add(this.fileName);
             this.Controls.Add(this.samplesLimit);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.label26);
@@ -604,7 +606,6 @@
             this.Controls.Add(this.currentAngle);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.label20);
-            this.Controls.Add(this.fileName);
             this.Controls.Add(this.listDistances);
             this.Controls.Add(this.label19);
             this.Controls.Add(this.listAngles);
@@ -683,7 +684,6 @@
         private System.Windows.Forms.ListBox listAngles;
         private System.Windows.Forms.Label label19;
         private System.Windows.Forms.ListBox listDistances;
-        private System.Windows.Forms.Label fileName;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label currentAngle;
@@ -703,6 +703,7 @@
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.TextBox samplesLimit;
+        private System.Windows.Forms.TextBox fileName;
     }
 }
 

@@ -84,7 +84,7 @@ namespace WebSocketClient
                   {
                  */
 
-                if ((this.filter == true && this.tagObject.Text != null && this.tagObject.Text != "") || this.filter == false)
+                if (this.filter == true && this.tagObject.Text != null && this.tagObject.Text != "")
                 {
                     connectButton.Enabled = false;
                     disconnectButton.Enabled = true;
@@ -113,7 +113,7 @@ namespace WebSocketClient
                     string filePath = "xp/"+ this.tagObject.Text + "/" + this.fileName.Text + this.formatFile.Text;
 
                     //on créer le fichier et on l'init de manière ASYNCHRONE : sinon l'écriture + ouverture peut provoquer des conflits
-                    initFile(filePath, format);
+                    initFile(filePath);
 
                     client.ConnectAsync();
 
@@ -222,14 +222,176 @@ namespace WebSocketClient
                         Console.WriteLine("CLOSING ...");
                     };
                 }
-                else if (this.filter == true)
+                else if (this.filter == true && (this.tagObject.Text == "" || this.tagAntenna.Text == ""))
                 {
-                    MessageBox.Show("Please, select filters : object, distance and angle ..");
+                    MessageBox.Show("Please, select filters : object");
+                }
+
+                // PARTIE SCENARIO -----------------------------------------------------------
+                // ---------------------------------------------------------------------------
+
+                //Si on veut enregistrer des scénarios et donc sans filtres
+                if(this.filter == false && this.fileName.Text != "")
+                {
+                    connectButton.Enabled = false;
+                    disconnectButton.Enabled = true;
+                    serverUrl.Enabled = false;
+                    this.messages.Items.Clear();
+
+                    t = new TW(this);
+                    t.Run();
+
+                    n = 0;
+
+                    client = new WebSocket(serverUrl.Text);
+
+                    initScenar();
+
+                    //cette liste va permettre de savoir quels objets sont détectés dans tout le scénario
+                    //et de créer les CSV si l'objet n'a pas déjà été détecté
+                    //Par exemple, on fait notre scénario et il y a au début 1 objet détecté, alors dans cette liste il y a 1 ID, et a chaque fois que l'on recevra
+                    //des JSON Array, a[i]["TagName"] sera toujours dans objetsDetectes
+                    //le but étant lorsqu'on détecte un nouvel objet, il ne soit pas dans cette liste et donc on créer le fichier et on refait le meme mecanisme
+                    List<string> objetsDetectes = new List<string>();
+
+                    client.ConnectAsync();
+
+                    client.OnOpen += (sender1, e1) =>
+                    {
+                        Console.WriteLine("CONNECTING TO " + serverUrl.Text + " .." + e1.ToString());
+                    };
+
+                    client.OnMessage += (sender1, e1) =>
+                    {
+                        if (e1.IsText)
+                        {
+                            JArray a = JArray.Parse(e1.Data);
+
+                            //pour toutes les cases du Json Array
+                            for (int i = 0; i < a.Count; i++)
+                            {
+                                //liste de string que l'on va ajouter dans la row
+                                //text[0] = timestamp
+                                //text[1-8] = les rssi de chaque antenne
+                                string[] text = new string[9];
+
+                                initText(text);
+
+                                //variables d'écriture du fichier
+                                StringBuilder csv = new StringBuilder();
+                                string tempPath;
+
+                                //On va lire le JSON Array : si l'id de l'objet ne fait pas partie de la liste objetDetectes
+                                //alors il n'a pas été détecté durant la simulation
+                                //et donc on va l'ajouter et créer le CSV
+
+                                bool enFaitPartie = false;
+
+                                //l'id de l'objet de la case du JSON Array
+                                string idObjet = a[i]["RFIDTagNames_ID_FK"].ToString();
+
+                                //on va vérifier dans les objets qui ont déjà été détecté durant le début de la connexion
+                                foreach(string o in objetsDetectes)
+                                {
+                                    //si l'objet a déjà été détecté alors on va stocker son id dans une variable permettant de consister un path
+                                    if(o == idObjet)
+                                    {
+                                        enFaitPartie = true;
+                                    }
+                                }
+
+                                //On récupère le nom de l'objet pour créer le fichier adéquat grâce à l'id
+                                string nomObjet = this.tags.getList().FirstOrDefault(x => x.Value == idObjet).Key;
+                                string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\xp\\" + this.fileName.Text + "\\" + nomObjet + this.formatFile.Text;
+                                tempPath = path;
+
+                                //Si enFaitPartie == false cela veut dire que depuis le ddébut la simulation l'objet n'a pas été détecté et donc on créer le csv (fichier)
+                                if (!enFaitPartie)
+                                {
+                                    initFile(path);
+                                    //on dit qu'il a été détecté durant la simulation et on l'ajoute à la liste des objets qui ont un CSV qui existe
+                                    objetsDetectes.Add(a[i]["RFIDTagNames_ID_FK"].ToString());
+                                }
+
+                                //on remplit le tableau
+                                Console.WriteLine(a[i]["RFID_Antennas_ID_FK"]);
+                                fillText(a[i], text);
+
+                                //on recup le temps
+                                var datetime = a[i]["TimeStamp"];
+                                var result = datetime.ToObject<DateTime>();
+                                text[0] = result.ToString("HH:mm:ss.fff");
+
+                                //on append la ligne dans le stringbuilder
+                                //exemple : le sel a été detecté par l'antenne 1,2 et 3 au temps t1
+                                //newLine = t1;-25;-45,6;-55;-70;-70;-70;-70;-70;-70;
+                                var newLine = string.Format("{0};{1};{2};{3};{4};{5};{6};{7};{8}", text);
+                                csv.AppendLine(newLine);
+
+                                //on ajoute la ligne dans le fichier csv
+                                this.Invoke((MethodInvoker)(() => File.AppendAllText(tempPath, csv.ToString())));
+
+                                //On augmente le nombre d'échantillons prélevés
+                                n++;
+                                this.Invoke((MethodInvoker)(() => this.samples.Text = n.ToString()));
+
+                                //le fichier sera donc constitué d'une liste de lignes avec les RSSI pour les antennes à des timestamp différents
+                            }
+
+                            //a la fin d'un message on push le tableau dans la liste des messages
+                            this.Invoke((MethodInvoker)(() => messages.Items.Add(a.ToString())));
+
+                            return;
+                        }
+
+                        if (e1.IsBinary)
+                        {
+                            Console.WriteLine("Server says: " + e1.RawData);
+                            return;
+                        }
+                    };
+
+                    client.OnClose += (sender1, e1) =>
+                    {
+                        Console.WriteLine("Code : " + e1.Code);
+                        Console.WriteLine("Reason : " + e1.Reason);
+                        Console.WriteLine("CLOSING ...");
+
+                        this.Invoke((MethodInvoker)(() => disconnectButton_Click(sender, e)));
+
+                        //On arrête le chrono
+                        t.Stop();
+
+                        double averageTime = (ending - beginning).TotalMilliseconds / n;
+                        MessageBox.Show("The session worked perfectly. \n There are : " + n + " samples \n For a total of : " + (ending - beginning).Seconds + "seconds \n And an average of : " + averageTime + " of milliseconds per record");
+
+
+                    };
+
+
+
+                }
+                else if(this.filter == false && this.fileName.Text == "")
+                {
+                    MessageBox.Show("Please, enter a specific name of file ..");
                 }
             }
             else
             {
                 MessageBox.Show("Please, enter an URL ..");
+            }
+        }
+
+        private void initScenar()
+        {
+            //variables d'écriture du fichier
+            string filePath = this.fileName.Text + "\\";
+
+            //créer le folder pour le scénar
+            string path = Path.GetDirectoryName(Application.ExecutablePath) + "\\xp\\" + filePath;
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
             }
         }
 
@@ -255,7 +417,7 @@ namespace WebSocketClient
             }
         }
 
-        private void initFile(string filePath, StringBuilder csv)
+        private void initFile(string filePath)
         {
 
             if(File.Exists(filePath))
@@ -316,8 +478,6 @@ namespace WebSocketClient
 
                 text[index] = rssi;
             }
-
-            //Console.WriteLine(jToken.ToString());
         }
 
         public void disconnectButton_Click(object sender, EventArgs e)
@@ -452,10 +612,32 @@ namespace WebSocketClient
             if (!this.filter)
             {
                 this.filters.Text = "OFF";
+                this.fileName.Enabled = true;
+                this.fileName.Text = "";
+                this.listAngles.Enabled = false;
+                this.listDistances.Enabled = false;
+                this.listAntennas.Enabled = false;
+                this.listTags.Enabled = false;
+                this.labelAntenna.Text = "";
+                this.labelIDAntenna.Text = "";
+                this.labelObject.Text = "";
+                this.labelIDObject.Text = "";
+                this.tagAntenna.Text = "";
+                this.tagObject.Text = "";
+                this.progressBar.Enabled = false;
+
+
             }
             else
             {
                 this.filters.Text = "ON";
+                this.fileName.Enabled = false;
+                this.listAngles.Enabled = true;
+                this.listDistances.Enabled = true;
+                this.listAntennas.Enabled = true;
+                this.listTags.Enabled = true;
+                this.progressBar.Enabled = true;
+
             }
         }
 
