@@ -54,6 +54,10 @@ Use :
 
     - Do this manipulation for every combination of Distance/Angle (like that, you will have EVERY NECESSARY data to generate the following graphs)
 
+    WARNING : you need to have either 100 samples or nothing in your files. Indeed, in the following scripts created, you need to have the same amount of samples to generate different graphs. So, if your antenne can retrieve 1 sample of data, it means, it can retrieve 100 samples. So you need to wait until there are 100 samples ... or an empty file !
+
+    OR : you can click "Filters" to disable filters and now you can just retrieve data for different scenarios : for example you want to retrieve data from a specific written scenario and for that you need to collect all the incoming data. Just press the button and enter the scenario's name : during the experiment, every data will be retrieved in a specific folder for all detected object.
+
   - Second step : data's process
     - Now you can generate every graphs ! I mean, the Python script will do it for you ! To generate those graphs you have 2 choices depending on how you did with your installations :
       - if you use Python, just run the Python script at `WebSocketClientCSharp\WebSocketClient\WebSocketClient\bin\Debug\generate\generateScript.py`(make sure you got all libraries installed on your computer) : it will generate every graphs AND you will be able to interact with them :
@@ -77,6 +81,7 @@ Use :
 
       WARNING !!! : during your data retrieving you chose a specific antenna. Whichs means, all your data are based on your antenna choice. MAKE SURE TO CHOOSE THE SAME ANTENNA FOR YOUR DATA RETRIEVING AND YOUR GENERATION OF DIFFERENT GRAPHS : if you chose the antenna number 1 for your data retrieving, make sure you choose the antenna number 1 for your graphs.
 
+
       - Now you can find different resulted files, such as :
         - `WebSocketClientCSharp\WebSocketClient\WebSocketClient\bin\Debug\xp\data` :
           - `data.csv` : a csv file which contains all information relative to the data such as :
@@ -90,6 +95,9 @@ Use :
           - format of finalData.csv : double entry table : `Distance;0[°];23[°];45[°];90[°]`
         - 2d/ :
           - every 2D graphs (as PNG) which shows us the divition between every samples during the experiment AND the average and the experiment for every couple distance/angle
+            - format of PNG files : `[Object]_[distance]_[angle].png`
+        - hist/ :
+          - every histograms of the division for all couple distance/angle to understand a potential mathematics law
             - format of PNG files : `[Object]_[distance]_[angle].png`
         - 2ddistanceangle/ :
           - the recap between every curves for each couple distance/angle
