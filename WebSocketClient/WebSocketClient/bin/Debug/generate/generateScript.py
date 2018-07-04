@@ -101,7 +101,7 @@ def verifyFiles() :
 #Fonction permettant de delete tous les graphs et images
 def clearAll() :
     
-    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap','data/2dlinregress','data']
+    folders = ['data/2d','data/3d','data/2ddistanceangle','data/heatmap','data/2dlinregress','data/hist','data']
     
     for temp in folders:
     
@@ -406,7 +406,14 @@ for (i, distance) in enumerate(distances):
                 temp = file.split('.')[0]
                 plt.savefig('data/2d/'+temp+'.png')
                 plt.close()
-            
+                
+                n, bins, patches = plt.hist(df[antenna],bins='auto', density=0)
+                plt.xlabel('RSSI')
+                plt.ylabel('Nombres d\'échantillons')
+                plt.savefig('data/hist/'+temp+'.png')
+                plt.close()
+
+                
             #Si le fichier ne contient pas de données et est donc empty
             else:
                 temp = file.split('.')[0]
