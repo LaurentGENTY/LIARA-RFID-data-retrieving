@@ -414,6 +414,8 @@ namespace WebSocketClient
                 Directory.CreateDirectory(path + "\\" + "data\\3d\\");
                 Directory.CreateDirectory(path + "\\" + "data\\heatmap\\");
                 Directory.CreateDirectory(path + "\\" + "data\\deltas\\");
+                Directory.CreateDirectory(path + "\\" + "data\\hist\\");
+
             }
         }
 
