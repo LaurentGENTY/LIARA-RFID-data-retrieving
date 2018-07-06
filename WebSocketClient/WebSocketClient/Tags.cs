@@ -21,6 +21,10 @@ namespace WebSocketClient
             this.list.Add("Chaudron3", "000000000000000000002741");
             this.list.Add("BocalPates1", "000000000000000000002748");
             this.list.Add("BocalPates2", "000000000000000000002765");
+            this.list.Add("Sassis4", "00000000001B2A4601001975");
+            this.list.Add("Fourchette", "000000000000000000002720");
+            this.list.Add("Couteau", "000000000000000000002761");
+
 
         }
 
